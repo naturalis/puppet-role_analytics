@@ -1,0 +1,34 @@
+input {
+  rabbitmq {
+    auto_delete => false
+    durable => false
+    exchange => "logstash"
+    exclusive => false
+    host => "10.42.1.75"
+    user => 'admin'
+    password => 'admin'
+    queue => "logstash-queue"
+    tags => ['sys','apache_access']
+    type => "logging"
+  }
+
+}
+
+
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+
+
+output {
+  elasticsearch {
+        protocol => http
+        cluster => "elasticsearch_ceph"
+        host => "10.42.1.73"
+  }
+}
