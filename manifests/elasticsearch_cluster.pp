@@ -3,7 +3,8 @@ class role_analytics::elasticsearch_cluster(
   $shards       = '3',
   $replicas     = '0',
   $es_memory_gb = false,
-  $es_data_dir  = '/data/elasticsearch'
+  $es_data_dir  = '/data/elasticsearch',
+  $es_modules   = ['xyu/elasticsearch-whatson/0.1.3'],
 ){
 	
   include stdlib
@@ -42,6 +43,10 @@ class role_analytics::elasticsearch_cluster(
         'DATA_DIR'              => $es_data_dir
     },
   }
-  
+
+  elasticsearch::plugin{ $es_modules :
+    module_dir => 'head',
+  }
+    
 
 }
