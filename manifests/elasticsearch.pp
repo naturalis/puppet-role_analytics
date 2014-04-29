@@ -11,7 +11,9 @@ class role_analytics::elasticsearch(
   $cluster_name = $role_analytics::params::cluster_name
 
   if !($es_memory_gb) {
-    $es_memory_gb = floor($::memorysize_mb/2000)
+    $es_memory_gb_real = floor($::memorysize_mb/2000)
+  }else{
+    $es_memory_gb_real = $es_memory_gb
   }
 
   common::directory_structure{ '$es_data_dir':
@@ -37,7 +39,7 @@ class role_analytics::elasticsearch(
       },
     java_install              => true,
     init_defaults             => {
-        'ES_HEAP_SIZE'          => "${$es_memory_gb}g",
+        'ES_HEAP_SIZE'          => "${$es_memory_gb_real}g",
         'DATA_DIR'              => $es_data_dir
     },
   }
