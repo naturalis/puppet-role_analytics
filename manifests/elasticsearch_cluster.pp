@@ -16,7 +16,7 @@ class role_analytics::elasticsearch_cluster(
     $es_memory_gb_real = $es_memory_gb
   }
 
-  common::directory_structure{ '$es_data_dir':
+  common::directory_structure{ $es_data_dir :
     user    => 'elasticsearch',
     mode    => '0750',
     notify  => Service['elasticsearch'],
