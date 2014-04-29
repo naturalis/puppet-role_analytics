@@ -16,11 +16,11 @@ class role_analytics::elasticsearch_cluster(
     $es_memory_gb_real = $es_memory_gb
   }
 
-  common::directory_structure{ $es_data_dir :
-    user    => 'elasticsearch',
-    mode    => '0750',
-    notify  => Service['elasticsearch'],
-  }
+  #common::directory_structure{ $es_data_dir :
+  #  user    => 'elasticsearch',
+  #  mode    => '0750',
+  #  notify  => Service['elasticsearch'],
+  #}
   
   class{ 'elasticsearch':
     package_url               => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${es_version}.deb",
