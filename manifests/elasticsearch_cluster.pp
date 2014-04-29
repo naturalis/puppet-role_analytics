@@ -20,7 +20,6 @@ class role_analytics::elasticsearch_cluster(
     user    => 'elasticsearch',
     mode    => '0750',
     notify  => Service['elasticsearch'],
-    require => Class['elasticsearch'] 
   }
   
   class{ 'elasticsearch':
