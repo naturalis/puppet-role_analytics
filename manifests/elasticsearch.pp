@@ -1,4 +1,4 @@
-class role_analytics::elasticsearch(
+class role_analytics::elasticsearch_cluster(
 	$es_version   = '1.0.1',
   $shards       = '3',
   $replicas     = '0',
