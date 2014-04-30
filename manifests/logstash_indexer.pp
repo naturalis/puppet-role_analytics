@@ -95,7 +95,7 @@ class role_analytics::logstash_indexer(
     $content    = "",
   ){
     
-    $order = 0
+    #$order = 0
     if $type == 'input' {
       $order = 100 
     } elsif $type == 'filter'{
