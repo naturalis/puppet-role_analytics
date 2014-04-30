@@ -36,7 +36,7 @@ class role_analytics::logstash_indexer(
 
   file_fragment { 'begin input':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => 'input {\n',
+      content => 'input {\r\n',
       order   => 0,
   }
   file_fragment { 'end_input':
