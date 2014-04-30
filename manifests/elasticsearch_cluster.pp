@@ -47,6 +47,11 @@ class role_analytics::elasticsearch_cluster(
   elasticsearch::plugin{ $es_modules :
     module_dir => 'head',
   }
+
+  @@role_analytics::logstash_indexer::indexer_config { "elasticsearch_output_${cluster_name}" :
+    type    => 'output',
+    content => "elasticsearch { cluster => ${cluster_name} }",
+  }
     
 
 }
