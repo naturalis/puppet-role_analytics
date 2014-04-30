@@ -48,10 +48,16 @@ class role_analytics::elasticsearch_cluster(
     module_dir => 'head',
   }
 
-  @@role_analytics::logstash_indexer::indexer_config { "elasticsearch_output_${cluster_name}" :
-    type    => 'output',
-    content => "elasticsearch { cluster => ${cluster_name} }",
-    tag     => "${cluster_name}_indexer_config",
+  #@@role_analytics::logstash_indexer::indexer_config { "elasticsearch_output_${cluster_name}" :
+  #  type    => 'output',
+  #  content => "elasticsearch { cluster => ${cluster_name} }",
+  #  tag     => "${cluster_name}_indexer_config",
+  #}
+
+  @@file_fragment { "elasticsearch_output_${cluster_name}" :
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => "elasticsearch { cluster => ${cluster_name} }",
+      order   => '750',
   }
     
 
