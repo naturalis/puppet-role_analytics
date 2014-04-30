@@ -4,6 +4,7 @@ class role_analytics::logstash_indexer(
 
   $cluster_name = $role_analytics::params::cluster_name
 
+  notify {$cluster_name :}
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
