@@ -10,6 +10,7 @@ class role_analytics::logstash_indexer(
     repos       => 'main',
     key         => '2BF6ED30',
     key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
+    include_src => false,
   }
 
   package { 'logstash' :
