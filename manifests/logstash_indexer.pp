@@ -34,41 +34,40 @@ class role_analytics::logstash_indexer(
 
 
 
-  @@file_fragment { 'begin input':
+  file_fragment { 'begin input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'input {
 ',
       order   => 0,
   }
-  @@file_fragment { 'end_input':
+  file_fragment { 'end_input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => '} 
 ',
       order   => 398,
   }
-  @@file_fragment { 'begin filter':
+  file_fragment { 'begin filter':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'filter {
 ',
       order   => 399,
   }
-  @@file_fragment { 'end filter':
+  file_fragment { 'end filter':
       tag     => "LS_CONFIG_${cluster_name}",
       content => '}
 ',
       order   => 698,
   }
-  @@file_fragment { 'begin output':
+  file_fragment { 'begin output':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => 'output {
-',
+      content => "output { elasticsearch { cluster => ${cluster_name} } }",
       order   => 699,
   }
-  @@file_fragment { 'end output':
-      tag     => "LS_CONFIG_${cluster_name}",
-      content => '}',
-      order   => 999,
-  }
+  #file_fragment { 'end output':
+  #    tag     => "LS_CONFIG_${cluster_name}",
+  #    content => '}',
+  #    order   => 999,
+  #}
 
   Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
     before => File_concat['/etc/logstash/conf.d/indexer']
@@ -76,16 +75,7 @@ class role_analytics::logstash_indexer(
   #File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> {
     
 
-  indexer_config { 'bla':
-    type => 'input',
-    content => 'bla',
-  }
-
-  indexer_config { 'bla2':
-    type => 'input',
-    content => 'bla',
-  }
-
+  
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
     owner   => 'logstash',       # Optional. Default to root
