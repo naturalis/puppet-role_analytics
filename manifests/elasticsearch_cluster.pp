@@ -56,7 +56,7 @@ class role_analytics::elasticsearch_cluster(
 
   @@file_fragment { "elasticsearch_output_${cluster_name}" :
       tag     => "LS_CONFIG_${cluster_name}",
-      content => "elasticsearch { cluster => ${cluster_name} }",
+      content => "elasticsearch bla",
       order   => '750',
   }
     
