@@ -41,7 +41,7 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'end_input':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => '}',
+      content => '} ',
       order   => 398,
   }
   file_fragment { 'begin filter':
@@ -51,7 +51,7 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'end filter':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => '}',
+      content => '} ',
       order   => 698,
   }
   file_fragment { 'begin output':
@@ -61,7 +61,7 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'end output':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => '}',
+      content => '} ',
       order   => 999,
   }
 
