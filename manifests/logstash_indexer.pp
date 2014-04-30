@@ -75,6 +75,11 @@ class role_analytics::logstash_indexer(
     before => File_concat['/etc/logstash/conf.d/indexer']
   }
 
+  indexer_config { 'bla':
+    type => 'input',
+    conent => 'bla',
+  }
+
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
     owner   => 'logstash',       # Optional. Default to root
