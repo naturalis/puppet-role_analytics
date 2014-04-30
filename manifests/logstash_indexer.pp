@@ -3,8 +3,6 @@ class role_analytics::logstash_indexer(
 	$version                       = '1.4',
 ){
 
-  #$cluster_name = $role_analytics::params::cluster_name
-
   notify {$cluster_name :}
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
@@ -53,20 +51,13 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'begin output':
       tag     => "LS_CONFIG_${cluster_name}",
-      #content => template('role_analytics/logstash_output_es.erb'),
       content => "output { elasticsearch { cluster => ${cluster_name} } }",
       order   => 699,
   }
-  #file_fragment { 'end output':
-  #    tag     => "LS_CONFIG_${cluster_name}",
-  #    content => '}',
-  #    order   => 999,
-  #}
-
+  
   Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
     before => File_concat['/etc/logstash/conf.d/indexer']
   }
-  #File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> {
     
 
   
@@ -101,8 +92,6 @@ class role_analytics::logstash_indexer(
       tag     => "LS_CONFIG_${cluster_name}",
       content => $content,
       order   => $order,
-      #notify  => Service['logstash'],
-      #require => Package['logstash'],
     }
   }
 }

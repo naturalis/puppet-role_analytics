@@ -49,17 +49,4 @@ class role_analytics::elasticsearch_cluster(
     module_dir => 'head',
   }
 
-  #@@role_analytics::logstash_indexer::indexer_config { "elasticsearch_output_${cluster_name}" :
-  #  type    => 'output',
-  #  content => "elasticsearch bla",
-  #  tag     => "${cluster_name}_indexer_config",
-  #}
-
-  #@@file_fragment { "elasticsearch_output_${cluster_name}" :
-  #    tag     => "LS_CONFIG_${cluster_name}",
-  #    content => "elasticsearch bla",
-  #    order   => '750',
-  #}
-    
-
 }
