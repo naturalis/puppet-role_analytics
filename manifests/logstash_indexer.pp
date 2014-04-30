@@ -60,7 +60,7 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'begin output':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => "output { elasticsearch { cluster => ${cluster_name} } }",
+      content => template('role_analytics/logstash_output_es.erb'),
       order   => 699,
   }
   #file_fragment { 'end output':
