@@ -70,7 +70,7 @@ class role_analytics::logstash_indexer(
       order   => 999,
   }
 
-  Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
+  Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
     before => File_concat['/etc/logstash/conf.d/indexer']
   }
   #File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> {
