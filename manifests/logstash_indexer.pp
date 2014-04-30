@@ -77,7 +77,7 @@ class role_analytics::logstash_indexer(
 
   indexer_config { 'bla':
     type => 'input',
-    conent => 'bla',
+    content => 'bla',
   }
 
   file_concat { '/etc/logstash/conf.d/indexer':
