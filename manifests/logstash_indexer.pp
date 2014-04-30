@@ -1,32 +1,75 @@
-role_analytics::logstash_indexer(
-	$version                       = '1.4.0',
-  $logstash_install_directory    = '/opt/logstash',
+class role_analytics::logstash_indexer(
+	$version                       = '1.4',
 ){
 
-  common::directory_structure{ $logstash_install_directory : }
-  common::directory_structure{ '/etc/logstash' : }
 
-  common::download_extract{ "logstash-${version}.tar.gz":
-    link        => "https://download.elasticsearch.org/logstash/logstash/logstash-${version}.tar.gz",
-    extract_dir => $logstash_install_directory,
-    creates     => "${logstash_install_directory}/logstash-${version}", 
-    require     => Common::Directory_structure[$logstash_install_directory],
+  apt::source { 'logstash':
+    location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
+    release     => 'stable',
+    repos       => 'main',
+    key         => '2BF6ED30',
+    key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
   }
 
-  file {'/etc/logstash/logstash_indexer.conf':
+  package { 'logstash' :
     ensure  => present,
-    mode    => '0640',
-    content => template('role_analytics/logstash_indexer.conf.erb'),
-    require => Common::Directory_structure['/etc/logstash'],
+    require => Apt::Source['logstash'],
+  }
+
+
+  service {'logstash':
+    ensure  => running,
+    require => Package['logstash'],
+  }
+
+  #file {'/etc/logstash/conf.d/logstash_indexer.conf':
+  #  ensure  => present,
+  #  mode    => '0640',
+  #  content => template('role_analytics/logstash_indexer.conf.erb'),
+  #  require => Package['logstash'],
+  #  notify  => Service['logstash']
+  #}
+
+
+
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => 'input {',
+      order   => 0,
+  }
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => '}',
+      order   => 398,
+  }
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => 'filter {',
+      order   => 399,
+  }
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => '}',
+      order   => 698,
+  }
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => 'output {',
+      order   => 699,
+  }
+  file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
+      content => '}',
+      order   => 999,
   }
 
 
 
 
-  define indexer_config::(
+  define indexer_config(
     $type       = undef,
-    $content    = undef,
-  ) {
+    $content    = "",
+  ){
     
     $order = 0
     if $type == 'input' {
@@ -36,17 +79,16 @@ role_analytics::logstash_indexer(
     } elsif $type == 'output' {
       $order = 700
     } else {
-      Fail('The variable type should be input, filter or output')
+      fail('The variable type should be input, filter or output')
     }
 
 
-    file_fragment { $name:
-      tag => "LS_CONFIG_${::fqdn}",
+    file_fragment { '/etc/logstash/conf.d/logstash_indexer.conf':
+      tag     => "LS_CONFIG_${::fqdn}",
       content => $content,
-      order =>   $order,
+      order   => $order,
+      notify  => Service['logstash'],
+      require => Package['logstash'],
     }
-
-
   }
-
 }
