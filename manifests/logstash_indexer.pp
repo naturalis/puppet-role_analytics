@@ -34,37 +34,37 @@ class role_analytics::logstash_indexer(
 
 
 
-  file_fragment { 'begin input':
+  @2file_fragment { 'begin input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'input {
 ',
       order   => 0,
   }
-  file_fragment { 'end_input':
+  @@file_fragment { 'end_input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => '} 
 ',
       order   => 398,
   }
-  file_fragment { 'begin filter':
+  @@file_fragment { 'begin filter':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'filter {
 ',
       order   => 399,
   }
-  file_fragment { 'end filter':
+  @@file_fragment { 'end filter':
       tag     => "LS_CONFIG_${cluster_name}",
       content => '}
 ',
       order   => 698,
   }
-  file_fragment { 'begin output':
+  @@file_fragment { 'begin output':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'output {
 ',
       order   => 699,
   }
-  file_fragment { 'end output':
+  @@file_fragment { 'end output':
       tag     => "LS_CONFIG_${cluster_name}",
       content => '}',
       order   => 999,
