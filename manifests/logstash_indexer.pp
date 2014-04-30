@@ -1,8 +1,9 @@
 class role_analytics::logstash_indexer(
+  $cluster_name,
 	$version                       = '1.4',
 ){
 
-  $cluster_name = $role_analytics::params::cluster_name
+  #$cluster_name = $role_analytics::params::cluster_name
 
   notify {$cluster_name :}
   apt::source { 'logstash':
@@ -25,16 +26,7 @@ class role_analytics::logstash_indexer(
     require => Package['logstash'],
   }
 
-  #file {'/etc/logstash/conf.d/logstash_indexer.conf':
-  #  ensure  => present,
-  #  mode    => '0640',
-  #  content => template('role_analytics/logstash_indexer.conf.erb'),
-  #  require => Package['logstash'],
-  #  notify  => Service['logstash']
-  #}
-
-
-
+  
   file_fragment { 'begin input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'input {

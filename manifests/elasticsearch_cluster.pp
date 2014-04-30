@@ -1,4 +1,5 @@
 class role_analytics::elasticsearch_cluster(
+  $cluster_name,
 	$es_version   = '1.0.1',
   $shards       = '3',
   $replicas     = '0',
@@ -9,7 +10,7 @@ class role_analytics::elasticsearch_cluster(
 	
   include stdlib
 
-  $cluster_name = $role_analytics::params::cluster_name
+  #$cluster_name = $role_analytics::params::cluster_name
 
   if !($es_memory_gb) {
     $es_memory_gb_real = floor($::memorysize_mb/2000)
