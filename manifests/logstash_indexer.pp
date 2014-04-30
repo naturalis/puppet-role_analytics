@@ -117,8 +117,8 @@ class role_analytics::logstash_indexer(
       tag     => "LS_CONFIG_${cluster_name}",
       content => $content,
       order   => $order,
-      notify  => Service['logstash'],
-      require => Package['logstash'],
+      #notify  => Service['logstash'],
+      #require => Package['logstash'],
     }
   }
 }
