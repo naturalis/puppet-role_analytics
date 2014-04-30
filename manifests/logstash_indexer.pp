@@ -71,7 +71,9 @@ class role_analytics::logstash_indexer(
   }
 
  # Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> ->
-  File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> ~>
+  File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> {
+    before => File_concat['/etc/logstash/conf.d/indexer']
+  }
 
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
