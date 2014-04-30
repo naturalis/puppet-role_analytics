@@ -100,7 +100,7 @@ class role_analytics::logstash_indexer(
     }
 
 
-    @@file_fragment { $name :
+    file_fragment { $name :
       tag     => "LS_CONFIG_${cluster_name}",
       content => $content,
       order   => $order,
