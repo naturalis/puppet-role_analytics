@@ -13,9 +13,9 @@ class role_analytics::rabbit_mq (
   rabbitmq_user { 'logstash':
     admin    => true,
     password => $rabbit_logstash_password,
-  }
+  } ->
 
-  rabbitmq_user_permissions { 'logstash':
+  rabbitmq_user_permissions { 'logstash@':
     configure_permission => '.*',
     read_permission      => '.*',
     write_permission     => '.*',
