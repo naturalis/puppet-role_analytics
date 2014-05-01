@@ -71,8 +71,9 @@ class role_analytics::logstash_indexer(
 
 
   define indexer_config(
-    $type       = undef,
-    $content    = "",
+    $type         = undef,
+    $content      = "",
+    $cluster_name,
   ){
     
     #$order = 0

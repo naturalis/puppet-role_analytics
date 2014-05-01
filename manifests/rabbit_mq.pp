@@ -22,9 +22,10 @@ class role_analytics::rabbit_mq (
   }
 
   @@role_analytics::logstash_indexer::indexer_config { "logstash-input-${::fqdn}":
-    type    => 'input',
-    content => template('role_analytics/logstash_rabbit_input.erb'),
-    tag     => "${cluster_name}_indexer_config",
+    type          => 'input',
+    content       => template('role_analytics/logstash_rabbit_input.erb'),
+    tag           => "${cluster_name}_indexer_config",
+    cluster_name  => $cluster_name,
   }
 
   #rabbitmq_exchange { 'logstash-exchange':
