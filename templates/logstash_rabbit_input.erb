@@ -5,7 +5,7 @@
     exclusive => false
     host => "<%= @ipaddress %>"
     user => 'logstash'
-    password => '<%= @cluster_name %>'
+    password => '<%= @rabbit_logstash_password %>'
     queue => "logstash-queue"
     tags => ['from_rabbitmq']
     type => "logging"
