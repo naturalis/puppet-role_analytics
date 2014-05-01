@@ -1,0 +1,13 @@
+  rabbitmq {
+    auto_delete => false
+    durable => false
+    exchange => "logstash-exchange"
+    exclusive => false
+    host => "<%= @ipaddress %>"
+    user => 'logstash'
+    password => '<%= @cluster_name %>'
+    queue => "logstash-queue"
+    tags => ['from_rabbitmq']
+    type => "logging"
+  }
+

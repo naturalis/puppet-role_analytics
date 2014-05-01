@@ -21,6 +21,11 @@ class role_analytics::rabbit_mq (
     write_permission     => '.*',
   }
 
+  @@role_analytics::logstash_indexer::indexer_config { "logstash-input-${::fqdn}":
+    type    => 'input',
+    content => template('role_analytics/logstash_rabbit_input.erb'),
+  }
+
   #rabbitmq_exchange { 'logstash-exchange':
   #  user     => 'logstash',
   #  password => $rabbit_logstash_password,
