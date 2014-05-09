@@ -5,7 +5,6 @@ class role_analytics::logstash_indexer(
 
   $a = split($::indexer_templates,",")
   #$a = $::indexer_templates
-  notify {"asdfadf":}
   if "indexer" in $a {
     #notice("hee")
     notify {$a:}
@@ -14,7 +13,7 @@ class role_analytics::logstash_indexer(
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
     repos       => 'main',
-    key         => '2BF6ED30',
+#    key         => '2BF6ED30',
     key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
     include_src => false,
   }
