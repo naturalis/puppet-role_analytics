@@ -1,4 +1,4 @@
-Facter.add("indexer_templates") do
+Facter.add("indexer_templates", :timeout => 10) do
   setcode do
     dir = "/etc/logstash/conf.d"
     if File.directory?(dir)
