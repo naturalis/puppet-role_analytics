@@ -3,6 +3,10 @@ class role_analytics::logstash_indexer(
 	$version                       = '1.4',
 ){
 
+  $a = ::$test_fact
+
+  notify{$a:}
+
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
@@ -23,7 +27,7 @@ class role_analytics::logstash_indexer(
     require => Package['logstash'],
   }
 
-  
+
   file_fragment { 'begin input':
       tag     => "LS_CONFIG_${cluster_name}",
       content => 'input {
@@ -32,7 +36,7 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'end_input':
       tag     => "LS_CONFIG_${cluster_name}",
-      content => '} 
+      content => '}
 ',
       order   => 398,
   }
@@ -53,13 +57,13 @@ class role_analytics::logstash_indexer(
       content => "output { elasticsearch { cluster => '${cluster_name}' } }",
       order   => 699,
   }
-  
+
   Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
     before => File_concat['/etc/logstash/conf.d/indexer']
   }
-    
 
-  
+
+
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
     owner   => 'logstash',       # Optional. Default to root
@@ -75,10 +79,10 @@ class role_analytics::logstash_indexer(
     $content      = "",
     $cluster_name,
   ){
-    
+
     #$order = 0
     if $type == 'input' {
-      $order = 100 
+      $order = 100
     } elsif $type == 'filter'{
       $order = 400
     } elsif $type == 'output' {
