@@ -3,8 +3,8 @@ class role_analytics::logstash_indexer(
 	$version                       = '1.4',
 ){
 
+  #$a = split($::indexer_templates,",")
   $a = $::indexer_templates
-
   notify { $a :}
 
   apt::source { 'logstash':
