@@ -3,7 +3,7 @@ class role_analytics::logstash_indexer(
 	$version                       = '1.4',
 ){
 
-  $a = $::test_fact
+  $a = $::indexer_templates
 
   notify { $a :}
 
