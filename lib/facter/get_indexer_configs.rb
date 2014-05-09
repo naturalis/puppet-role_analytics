@@ -1,7 +1,12 @@
 Facter.add("indexer_templates") do
   setcode do
-    result = Dir.entries("/etc/logstash/conf.d")
-    #Facter::Util::Resolution.exec('/bin/ls /etc/logstash/conf.d')
-    puts result.join(",")
+    dir = "/etc/logstash/conf.d"
+    if File.directory?(dir)
+      result = Dir.entries(dir)
+      #Facter::Util::Resolution.exec('/bin/ls /etc/logstash/conf.d')
+      puts result.join(",")
+    else
+      puts "none"
+    end
   end
 end
