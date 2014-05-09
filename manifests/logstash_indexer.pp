@@ -3,9 +3,9 @@ class role_analytics::logstash_indexer(
 	$version                       = '1.4',
 ){
 
-  $a = ::$test_fact
+  $a = $::test_fact
 
-  notify{$a:}
+  notify { $a :}
 
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
