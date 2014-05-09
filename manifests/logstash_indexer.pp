@@ -6,9 +6,10 @@ class role_analytics::logstash_indexer(
   $a = split($::indexer_templates,",")
   #$a = $::indexer_templates
   notice($::indexer_templates)
-  notice("asdfadf")
+  notify {"asdfadf":}
   if "indexer" in $a {
-    notice("hee")
+    #notice("hee")
+    notify {"hee":}
   }
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
