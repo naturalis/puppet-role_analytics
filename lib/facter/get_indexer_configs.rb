@@ -5,9 +5,9 @@ Facter.add("indexer_templates") do
       filters = Dir.entries(dir)
       filters.reject! {|x| x == "." || x == ".."}
       #Facter::Util::Resolution.exec('/bin/ls /etc/logstash/conf.d')
-      puts filters.join(",")
+      filters.join(",")
     else
-      puts "none"
+      "none"
     end
   end
 end
