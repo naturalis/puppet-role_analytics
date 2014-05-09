@@ -5,7 +5,7 @@ class role_analytics::logstash_indexer(
 
   $a = split($::indexer_templates,",")
   #$a = $::indexer_templates
-  notify { $a :}
+  notice($a)
 
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
