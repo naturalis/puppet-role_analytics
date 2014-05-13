@@ -2,13 +2,12 @@ input {
   rabbitmq {
     auto_delete => false
     durable => false
-    exchange => "logstash"
-    exclusive => false
+    exchange => "logstash-exchange"
     host => "10.42.1.75"
-    user => 'admin'
-    password => 'admin'
+    user => '<%= @cluster_name %>'
+    password => '<%= @cluster_name %>'
     queue => "logstash-queue"
-    tags => ['sys','apache_access']
+    tags => [rabbitmq_001']
     type => "logging"
   }
 
@@ -27,8 +26,6 @@ filter {
 
 output {
   elasticsearch {
-        protocol => http
-        cluster => "elasticsearch_ceph"
-        host => "10.42.1.73"
+    cluster => '<%= @cluster_name %>'
   }
 }

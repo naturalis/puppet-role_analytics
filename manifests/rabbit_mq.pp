@@ -28,10 +28,15 @@ class role_analytics::rabbit_mq (
     cluster_name  => $cluster_name,
   }
 
-  #rabbitmq_exchange { 'logstash-exchange':
-  #  user     => 'logstash',
-  #  password => $rabbit_logstash_password,
-  #  type     => 'direct',
-  #  ensure   => present,
-  #}
+   @@haproxy::balancermember { $fqdn:
+    listening_service => "analytics-${cluster_name}",
+    server_names      => $::hostname,
+    ipaddresses       => $::ipaddress,
+    ports             => '5672,15672',
+    options           => 'check'
+  }
+
+
+
+
 }
