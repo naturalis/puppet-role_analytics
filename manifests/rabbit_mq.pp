@@ -32,8 +32,7 @@ class role_analytics::rabbit_mq (
     listening_service => "analytics-${cluster_name}",
     server_names      => $::hostname,
     ipaddresses       => $::ipaddress,
-    ports             => '15672',
-    options           => 'check'
+    ports             => '5672,15672',
   }
 
 
