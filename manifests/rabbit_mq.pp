@@ -21,7 +21,7 @@ class role_analytics::rabbit_mq (
     write_permission     => '.*',
   } ->
 
-  rabbitmq_exchange { 'logstash-exchange@':
+  rabbitmq_exchange { 'logstash-exchange@/':
     user     => 'logstash',
     password => $rabbit_logstash_password,
     type     => 'direct',
