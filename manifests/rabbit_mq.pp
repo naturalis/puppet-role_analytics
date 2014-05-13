@@ -19,7 +19,14 @@ class role_analytics::rabbit_mq (
     configure_permission => '.*',
     read_permission      => '.*',
     write_permission     => '.*',
-  }
+  } ->
+
+  rabbitmq_exchange { 'logstash-exchange@':
+  user     => 'logstash',
+  password => $,
+  type     => 'direct',
+  ensure   => present,
+}
 
   #file_fragment { 'begin output':
   #    tag     => "LS_CONFIG_${cluster_name}",
