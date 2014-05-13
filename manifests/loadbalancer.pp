@@ -1,6 +1,6 @@
 class role_analytics::loadbalancer(
   $cluster_name,
-  $rabbitmqport = '5672,15672',
+  $rabbitmqport = '15672',
 ){
   class { 'haproxy': }
 
