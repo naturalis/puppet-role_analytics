@@ -36,6 +36,38 @@ class role_analytics::logstash_indexer(
 
 
 
+  file_fragment { 'begin input':
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => 'input {
+',
+      order   => 0,
+  }
+  file_fragment { 'end_input':
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => '}
+',
+      order   => 398,
+  }
+  file_fragment { 'begin filter':
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => 'filter {
+',
+      order   => 399,
+  }
+  file_fragment { 'end filter':
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => '}
+',
+      order   => 698,
+  }
+  file_fragment { 'begin output':
+      tag     => "LS_CONFIG_${cluster_name}",
+      content => "output { elasticsearch { cluster => '${cluster_name}' } }",
+      order   => 699,
+  }
+
+
+
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
     owner   => 'logstash',       # Optional. Default to root
@@ -46,63 +78,29 @@ class role_analytics::logstash_indexer(
   }
 
 
-  define indexer_config(
-    $type          ,
-    $cluster_name  ,
-    $content       = '',
-    $catagory      = 'filter'
-  ){
 
-    if $type in $indexer_configs {
-
-      if $type == 'input' {
-        $order = 100
-      } elsif $type == 'filter'{
-        $order = 400
-      } elsif $type == 'output' {
-        $order = 700
-      } else {
-        fail('The variable type should be input, filter or output')
-      }
-
-
-      file_fragment { $name :
-        tag     => "LS_CONFIG_${cluster_name}",
-        content => $content,
-        order   => $order,
-      }
-
-      file_fragment { 'begin input':
-          tag     => "LS_CONFIG_${cluster_name}",
-          content => 'input {
-',
-          order   => 0,
-      }
-      file_fragment { 'end_input':
-          tag     => "LS_CONFIG_${cluster_name}",
-          content => '}
-',
-          order   => 398,
-      }
-      file_fragment { 'begin filter':
-          tag     => "LS_CONFIG_${cluster_name}",
-          content => 'filter {
-',
-          order   => 399,
-      }
-      file_fragment { 'end filter':
-          tag     => "LS_CONFIG_${cluster_name}",
-          content => '}
-',
-          order   => 698,
-      }
-      file_fragment { 'begin output':
-          tag     => "LS_CONFIG_${cluster_name}",
-          content => "output { elasticsearch { cluster => '${cluster_name}' } }",
-          order   => 699,
-      }
-
-    }
-  }
+  # define indexer_config(
+  #   $type          ,
+  #   $cluster_name  ,
+  #   $content       = '',
+  #   $catagory      = 'filter'
+  # ){
+  #
+  #   if $type in $indexer_configs {
+  #
+  #     if $type == 'input' {
+  #       $order = 100
+  #     } elsif $type == 'filter'{
+  #       $order = 400
+  #     } elsif $type == 'output' {
+  #       $order = 700
+  #     } else {
+  #       fail('The variable type should be input, filter or output')
+  #     }
+  #
+  #
+  #
+  #   }
+  # }
 
 }

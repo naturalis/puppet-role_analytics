@@ -21,11 +21,16 @@ class role_analytics::rabbit_mq (
     write_permission     => '.*',
   }
 
-  @@role_analytics::logstash_indexer::indexer_config { "logstash-input-${::fqdn}":
-    type          => 'input',
+  #file_fragment { 'begin output':
+  #    tag     => "LS_CONFIG_${cluster_name}",
+  #    content => "output { elasticsearch { cluster => '${cluster_name}' } }",
+  #    order   => 699,
+  #}
+
+  @@file_fragment { "logstash-input-${::fqdn}":
+    order          => 100,
     content       => template('role_analytics/logstash_rabbit_input.erb'),
-    tag           => "${cluster_name}_indexer_config",
-    cluster_name  => $cluster_name,
+    tag           => "LS_CONFIG_${cluster_name}",
   }
 
    @@haproxy::balancermember { $fqdn:
