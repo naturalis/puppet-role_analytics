@@ -1,6 +1,6 @@
   rabbitmq {
     auto_delete => false
-    durable => false
+    durable => true
     exchange => "logstash-exchange"
     exclusive => false
     host => "<%= @ipaddress %>"

@@ -26,7 +26,6 @@ class role_analytics::rabbit_mq (
     password => $rabbit_logstash_password,
     type     => 'direct',
     ensure   => present,
-    durable  => 'false',
   }
 
   #file_fragment { 'begin output':
