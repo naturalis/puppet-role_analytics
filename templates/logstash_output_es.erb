@@ -1,1 +1,6 @@
-output { elasticsearch { cluster => <%= @cluster_name %> } }
+}
+output {
+  elasticsearch {
+    cluster => <%= "@cluster_name" %>
+  }
+}
