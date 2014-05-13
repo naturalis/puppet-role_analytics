@@ -30,9 +30,9 @@ class role_analytics::logstash_indexer(
 
 
 
-  Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
-    before => File_concat['/etc/logstash/conf.d/indexer']
-  }
+  #Role_analytics::Logstash_indexer::Indexer_config <<| tag == "${cluster_name}_indexer_config" |>> {
+  #  before => File_concat['/etc/logstash/conf.d/indexer']
+  #}
 
 
 
@@ -66,7 +66,9 @@ class role_analytics::logstash_indexer(
       order   => 699,
   }
 
-
+  File_fragment <<| tag == "LS_CONFIG_${cluster_name}" |>> {
+    before => File_concat['/etc/logstash/conf.d/indexer']
+  }
 
   file_concat { '/etc/logstash/conf.d/indexer':
     tag     => "LS_CONFIG_${cluster_name}", # Mandatory
