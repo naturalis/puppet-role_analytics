@@ -22,11 +22,11 @@ class role_analytics::rabbit_mq (
   } ->
 
   rabbitmq_exchange { 'logstash-exchange@':
-  user     => 'logstash',
-  password => $rabbit_logstash_password,
-  type     => 'direct',
-  ensure   => present,
-}
+    user     => 'logstash',
+    password => $rabbit_logstash_password,
+    type     => 'direct',
+    ensure   => present,
+  }
 
   #file_fragment { 'begin output':
   #    tag     => "LS_CONFIG_${cluster_name}",
