@@ -23,7 +23,7 @@ class role_analytics::rabbit_mq (
 
   rabbitmq_exchange { 'logstash-exchange@':
   user     => 'logstash',
-  password => $,
+  password => $rabbit_logstash_password,
   type     => 'direct',
   ensure   => present,
 }
