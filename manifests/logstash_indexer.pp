@@ -5,7 +5,8 @@ class role_analytics::logstash_indexer(
 
   $indexer_configs = split($::indexer_templates,",")
   #$a = $::indexer_templates
-  notify { $::ipaddress :}
+  notify { $::ipaddress :
+  }
 
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
@@ -52,7 +53,7 @@ class role_analytics::logstash_indexer(
     $catagory      = 'filter'
   ){
 
-    if $type not in $indexer_configs {
+    if $type in $indexer_configs {
 
       if $type == 'input' {
         $order = 100
