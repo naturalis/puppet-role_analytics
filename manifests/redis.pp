@@ -3,7 +3,7 @@ class role_analytics::redis (
   $redis_password,
 ) {
 
-  class { 'redis':
+  class { '::redis':
     bind        => $::ipaddress,
   }
 
