@@ -8,6 +8,7 @@ class role_analytics::redis (
     manage_repo => true,
     ppa_repo    => 'ppa:rwky/redis',
     requirepass => true,
+    masterauth  => $redis_password,
   }
 
 }
