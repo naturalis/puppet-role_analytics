@@ -19,21 +19,22 @@ class role_analytics::logstash_client(
     include_src => false,
   }
 
-  #package { 'logstash' :
-  #  ensure  => present,
+  package { 'logstash' :
+    ensure  => present,
+    require => Apt::Source['logstash'],
+    install_options => '--force-yes',
+  }
+
+  #apt::force { 'logstash':
+  #  release => 'main',
   #  require => Apt::Source['logstash'],
   #}
-
-  apt::force { 'logstash':
-    release => 'main',
-    require => Apt::Source['logstash'],
-  }
 
 
   service {'logstash':
     ensure  => running,
-    #require => Package['logstash'],
-    require => Apt::Force['logstash'],
+    require => Package['logstash'],
+    #require => Apt::Force['logstash'],
   }
 
 
@@ -89,8 +90,8 @@ class role_analytics::logstash_client(
     owner   => 'logstash',       # Optional. Default to root
     group   => 'logstash',       # Optional. Default to root
     mode    => '0640',        # Optional. Default to 0644
-    #require => Package['logstash'],
-    require => Apt::Force['logstash'],
+    require => Package['logstash'],
+    #require => Apt::Force['logstash'],
     notify  => Service['logstash'],
   }
 }
