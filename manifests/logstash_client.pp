@@ -14,7 +14,7 @@ class role_analytics::logstash_client(
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
     repos       => 'main',
-  #  key         => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
+    key         => 'D88E42B4',
     key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
     include_src => false,
   }
@@ -22,7 +22,7 @@ class role_analytics::logstash_client(
   package { 'logstash' :
     ensure  => present,
     require => Apt::Source['logstash'],
-    install_options => '--force-yes',
+#    install_options => '--force-yes',
   }
 
   #apt::force { 'logstash':
