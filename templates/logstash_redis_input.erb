@@ -2,6 +2,6 @@
     host => '<%= @ipaddress %>'
     key => 'logstash:redis'
     data_type => 'list'
-    tags => ['from_'<%= @hostname %>,'redis']
+    tags => ['from_<%= @hostname %>','redis']
     password => '<%= @redis_password %>'
   }
