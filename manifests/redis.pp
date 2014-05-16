@@ -22,7 +22,7 @@ class role_analytics::redis (
   #notify { $test_q :
   #  message => $test_w[ipaddress],
   #}
-  $test_x = flatten($test_w)
+  $test_x = parsejson($test_w)
   notify { $test_x : }
 
 
