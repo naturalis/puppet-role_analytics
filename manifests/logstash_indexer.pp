@@ -50,7 +50,8 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'end filter':
       tag     => "LS_CONFIG_INDEXER_${cluster_name}",
-      content => '}
+      content => '
+}
 ',
       order   => 698,
   }
