@@ -19,15 +19,20 @@ class role_analytics::logstash_client(
     include_src => false,
   }
 
-  package { 'logstash' :
-    ensure  => present,
+  #package { 'logstash' :
+  #  ensure  => present,
+  #  require => Apt::Source['logstash'],
+  #}
+
+  apt::force { 'logstash':
     require => Apt::Source['logstash'],
   }
 
 
   service {'logstash':
     ensure  => running,
-    require => Package['logstash'],
+    #require => Package['logstash'],
+    require => Apt::Force['logstash'],
   }
 
 
