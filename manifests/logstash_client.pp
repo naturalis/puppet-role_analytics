@@ -25,7 +25,7 @@ class role_analytics::logstash_client(
   #}
 
   apt::force { 'logstash':
-    release => 'main'
+    release => 'main',
     require => Apt::Source['logstash'],
   }
 
