@@ -13,7 +13,7 @@ class role_analytics::redis (
   @@file_fragment { "logstash-input-${::fqdn}":
     order          => 100,
     content       => template('role_analytics/logstash_redis_input.erb'),
-    tag           => "LS_CONFIG_INDEXER${cluster_name}",
+    tag           => "LS_CONFIG_INDEXER_${cluster_name}",
   }
 
 
