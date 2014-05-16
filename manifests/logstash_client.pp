@@ -7,8 +7,8 @@ class role_analytics::logstash_client(
 ){
 
 
-  $redis_cluster_members = query_nodes("Class[Role_analytics::Elasticsearch_cluster]{cluster_name='${cluster_name}'}",ipaddress)
-  $redis_cluster_string = join($test_q,'","')
+  $redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ipaddress)
+  $redis_cluster_string = join($redis_cluster_members,'","')
 
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
