@@ -16,10 +16,12 @@ class role_analytics::redis (
     tag           => "LS_CONFIG_INDEXER${cluster_name}",
   }
 
-  $test_q = query_nodes('Class[Role_analytics::Elasticsearch_cluster]',ipaddress)
+  $test_q = query_nodes('Class[Role_analytics::Elasticsearch_cluster]')
   $test_w = query_facts('Class[Role_analytics::Elasticsearch_cluster]',['ipaddress','cluster_name'])
 
-  notify { $test_q : }
+  notify { $test_q :
+    message => $test_w[$name],
+  }
   #notify { $test_w : }
 
 
