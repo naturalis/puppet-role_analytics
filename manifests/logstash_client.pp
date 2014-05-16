@@ -14,7 +14,7 @@ class role_analytics::logstash_client(
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
     repos       => 'main',
-    key         => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
+  #  key         => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
     key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
     include_src => false,
   }
