@@ -88,7 +88,8 @@ class role_analytics::logstash_client(
     owner   => 'logstash',       # Optional. Default to root
     group   => 'logstash',       # Optional. Default to root
     mode    => '0640',        # Optional. Default to 0644
-    require => Package['logstash'],
+    #require => Package['logstash'],
+    require => Apt::Force['logstash'],
     notify  => Service['logstash'],
   }
 }
