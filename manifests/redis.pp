@@ -20,7 +20,7 @@ class role_analytics::redis (
   $test_w = query_facts('Class[Role_analytics::Elasticsearch_cluster]',['ipaddress','cluster_name'])
 
   notify { $test_w :
-    message => $test_w[$title],
+    message => $test_w[ipaddress],
   }
   #notify { $test_w : }
 
