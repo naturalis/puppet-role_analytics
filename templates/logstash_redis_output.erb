@@ -1,0 +1,8 @@
+output {
+  redis {
+    host => [ <%= redis_ipadresses %> ]
+    key => 'logstash:redis'
+    data_type => 'list'
+    password => '<%= @redis_password %>'
+  }
+}

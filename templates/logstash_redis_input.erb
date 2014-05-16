@@ -1,0 +1,7 @@
+  redis {
+    host => <%= ipaddrress %>
+    key => 'logstash:redis'
+    data_type => 'list'
+    tags => ['from_'<%= @hostname %>,'redis']
+    password => '<%= @redis_password %>'
+  }
