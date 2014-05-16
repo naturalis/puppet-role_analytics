@@ -8,7 +8,7 @@ class role_analytics::logstash_indexer(
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
     release     => 'stable',
     repos       => 'main',
-#    key         => '2BF6ED30',
+    key         => 'D88E42B4',
     key_server  => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
     include_src => false,
   }
