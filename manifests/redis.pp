@@ -16,14 +16,7 @@ class role_analytics::redis (
     tag           => "LS_CONFIG_INDEXER${cluster_name}",
   }
 
-  $test_q = query_nodes("Class[Role_analytics::Elasticsearch_cluster]{cluster_name='${cluster_name}'}",ipaddress)
-  $test_w = query_facts('Class[Role_analytics::Elasticsearch_cluster]',['ipaddress'])
-  $test_x = join($test_q,'","')
-  notify { "[\"${test_x}\"]" :
-  #  message => $test_q,
-  }
-  #$test_x = parsejson($test_w)
-  #notify { $test_x : }
+
 
 
 }

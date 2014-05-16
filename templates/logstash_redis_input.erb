@@ -1,5 +1,5 @@
   redis {
-    host => <%= ipaddress %>
+    host => <%= @ipaddress %>
     key => 'logstash:redis'
     data_type => 'list'
     tags => ['from_'<%= @hostname %>,'redis']

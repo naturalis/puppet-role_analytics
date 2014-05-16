@@ -1,9 +1,14 @@
-class role_analytics::logstash_indexer(
+class role_analytics::logstash_client(
   $cluster_name,
+  $redis_password,
 	$version          = '1.4',
   $logstash_input   = '# No input configured. Use Puppet variable',
   $logstash_filter  = '# No filter configured. Use Puppet variable',
 ){
+
+
+  $redis_cluster_members = query_nodes("Class[Role_analytics::Elasticsearch_cluster]{cluster_name='${cluster_name}'}",ipaddress)
+  $redis_cluster_string = join($test_q,'","')
 
   apt::source { 'logstash':
     location    => "http://packages.elasticsearch.org/logstash/${version}/debian",
@@ -62,11 +67,11 @@ class role_analytics::logstash_indexer(
       order   => 698,
   }
 
-  #file_fragment { 'output':
-  #    tag     => "LS_CONFIG_CLIENT_${cluster_name}",
-  #    content => "output { elasticsearch { cluster => '${cluster_name}' } }",
-  #    order   => 699,
-  #}
+  file_fragment { 'output':
+      tag     => "LS_CONFIG_CLIENT_${cluster_name}",
+      content => template('role_analytics/logstash_redis_output.erb'),
+      order   => 699,
+  }
 
   File_fragment <<| tag == "LS_CONFIG_CLIENT_${cluster_name}" |>> {
     before => File_concat['/etc/logstash/conf.d/logstash_client.conf']
