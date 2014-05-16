@@ -7,7 +7,7 @@ class role_analytics::redis (
     bind        => $::ipaddress,
     manage_repo => true,
     ppa_repo    => 'ppa:rwky/redis',
-    requirepass => false,
+    requirepass => $redis_password,
     #masterauth  => $redis_password,
   }
 
