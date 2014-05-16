@@ -37,7 +37,7 @@ class role_analytics::logstash_client(
       order   => 0,
   }
 
-  file_fragment { 'filter':
+  file_fragment { 'input':
     tag     => "LS_CONFIG_CLIENT_${cluster_name}",
     content => $logstash_input,
     order   => 200,
