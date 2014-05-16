@@ -1,6 +1,6 @@
 output {
   redis {
-    host => [ <%= @redis_cluster_string %> ]
+    host => [ "<%= @redis_cluster_string %>" ]
     key => 'logstash:redis'
     data_type => 'list'
     password => '<%= @redis_password %>'
