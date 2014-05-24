@@ -82,7 +82,8 @@ class role_analytics::logstash_client(
   file_fragment { 'end_input':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
       content => '
-}',
+}
+',
       order   => 398,
   }
   file_fragment { 'begin filter':
@@ -99,7 +100,8 @@ class role_analytics::logstash_client(
   file_fragment { 'end filter':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
       content => '
-}',
+}
+',
       order   => 698,
   }
 
