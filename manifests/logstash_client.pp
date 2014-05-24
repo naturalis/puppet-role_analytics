@@ -36,11 +36,19 @@ class role_analytics::logstash_client(
       require => Package['collectd'],
     }
 
+    file { '/etc/collectd/collectd.conf':
+      ensure  => present,
+      content => template('role_analytics/collectd_simple.erb'),
+      require => [Package['collectd'],Service['collectd']]
+      notify  => Service['collectd']
+    }
+
     file_fragment { 'input collectd':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
       content => '  collectd { tags => ["collectd"] }',
       order   => 100,
     }
+
   }
 
   #apt::force { 'logstash':
