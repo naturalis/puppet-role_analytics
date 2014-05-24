@@ -4,6 +4,7 @@ class role_analytics::logstash_client(
 	$version          = '1.4',
   $logstash_input   = '# No input configured. Use Puppet variable',
   $logstash_filter  = '# No filter configured. Use Puppet variable',
+  $use_collectd     = false,
 ){
 
 
@@ -25,6 +26,23 @@ class role_analytics::logstash_client(
 #    install_options => '--force-yes',
   }
 
+  if $use_collectd {
+    package { 'collectd' :
+      ensure => present,
+    }
+
+    service { 'collectd' :
+      ensure  => running,
+      require => Package['collectd'],
+    }
+
+    file_fragment { 'input collectd':
+      tag     => "LS_CONFIG_CLIENT_${cluster_name}",
+      content => '  collectd { tags => ["collectd"] }',
+      order   => 100,
+    }
+  }
+
   #apt::force { 'logstash':
   #  release => 'main',
   #  require => Apt::Source['logstash'],
@@ -44,6 +62,8 @@ class role_analytics::logstash_client(
 ',
       order   => 0,
   }
+
+
 
   file_fragment { 'input':
     tag     => "LS_CONFIG_CLIENT_${cluster_name}",
