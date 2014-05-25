@@ -35,14 +35,15 @@ class role_analytics::logstash_client(
     }
 
     class { 'collectd::plugin::network':
-    #  require => Class['collectd'],
       server => '127.0.0.1',
     }
-    class { 'collectd::plugin::load':
-    #  require => Class['collectd'],
+    class { 'collectd::plugin::load': }
+
+    file_fragment { 'input collectd':
+      tag     => "LS_CONFIG_CLIENT_${cluster_name}",
+      content => '  collectd { tags => ["collectd"] }',
+      order   => 100,
     }
-
-
 
 
     # apt::ppa { 'ppa:llnw/collectd': }
@@ -63,11 +64,7 @@ class role_analytics::logstash_client(
     #   notify  => Service['collectd'],
     # }
     #
-    # file_fragment { 'input collectd':
-    #   tag     => "LS_CONFIG_CLIENT_${cluster_name}",
-    #   content => '  collectd { tags => ["collectd"] }',
-    #   order   => 100,
-    # }
+
 
   }
 
