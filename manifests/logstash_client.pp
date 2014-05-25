@@ -35,11 +35,11 @@ class role_analytics::logstash_client(
     }
 
     class { 'collectd::plugin::network':
-      require => Class['collectd'],
+    #  require => Class['collectd'],
       server => '127.0.0.1',
     }
     class { 'collectd::plugin::load':
-      require => Class['collectd'],
+    #  require => Class['collectd'],
     }
 
 
