@@ -28,29 +28,46 @@ class role_analytics::logstash_client(
 
   if $use_collectd {
 
-    apt::ppa { 'ppa:llnw/collectd': }
-    
-    package { 'collectd' :
-      ensure => present,
+    class { '::collectd':
+      purge        => true,
+      recurse      => true,
+      purge_config => true,
     }
 
-    service { 'collectd' :
-      ensure  => running,
-      require => Package['collectd'],
+    class { 'collectd::plugin::network':
+      require => Class['collectd'],
+      server => '127.0.0.1',
+    }
+    class { 'collectd::plugin::load':
+      require => Class['collectd'],
     }
 
-    file { '/etc/collectd/collectd.conf':
-      ensure  => present,
-      content => template('role_analytics/collectd_simple.erb'),
-      require => Package['collectd'],
-      notify  => Service['collectd'],
-    }
 
-    file_fragment { 'input collectd':
-      tag     => "LS_CONFIG_CLIENT_${cluster_name}",
-      content => '  collectd { tags => ["collectd"] }',
-      order   => 100,
-    }
+
+
+    # apt::ppa { 'ppa:llnw/collectd': }
+    #
+    # package { 'collectd' :
+    #   ensure => present,
+    # }
+    #
+    # service { 'collectd' :
+    #   ensure  => running,
+    #   require => Package['collectd'],
+    # }
+    #
+    # file { '/etc/collectd/collectd.conf':
+    #   ensure  => present,
+    #   content => template('role_analytics/collectd_simple.erb'),
+    #   require => Package['collectd'],
+    #   notify  => Service['collectd'],
+    # }
+    #
+    # file_fragment { 'input collectd':
+    #   tag     => "LS_CONFIG_CLIENT_${cluster_name}",
+    #   content => '  collectd { tags => ["collectd"] }',
+    #   order   => 100,
+    # }
 
   }
 
