@@ -40,6 +40,11 @@ class role_analytics::logstash_client(
     }
     class { 'collectd::plugin::load': }
     #class { 'collectd::plugin::cpu': }
+    class { 'collectd::plugin::memory': }
+    class { 'collectd::plugin::disk':
+      disks => ['/dev/dm-2'],
+    }
+
 
     file_fragment { 'input collectd':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
