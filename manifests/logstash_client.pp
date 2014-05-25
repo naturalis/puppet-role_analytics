@@ -42,7 +42,7 @@ class role_analytics::logstash_client(
     #class { 'collectd::plugin::cpu': }
     class { 'collectd::plugin::memory': }
     class { 'collectd::plugin::disk':
-      disks => ['/dev/dm-2'],
+      disks => ['dm-2'],
     }
 
 
