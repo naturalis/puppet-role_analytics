@@ -27,6 +27,9 @@ class role_analytics::logstash_client(
   }
 
   if $use_collectd {
+
+    apt::ppa { 'ppa:llnw/collectd': }
+    
     package { 'collectd' :
       ensure => present,
     }
