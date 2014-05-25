@@ -39,6 +39,7 @@ class role_analytics::logstash_client(
       server => '127.0.0.1',
     }
     class { 'collectd::plugin::load': }
+    class { 'collectd::plugin::cpu': }
 
     file_fragment { 'input collectd':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
