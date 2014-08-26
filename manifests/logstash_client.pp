@@ -48,7 +48,9 @@ class role_analytics::logstash_client(
 
     file_fragment { 'input collectd':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
-      content => '  collectd { tags => ["collectd"] }',
+      content => '  collectd { tags => ["collectd"] }
+',
+
       order   => 100,
     }
 
