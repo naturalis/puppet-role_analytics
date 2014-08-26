@@ -44,6 +44,8 @@ class role_analytics::logstash_client(
     class { 'collectd::plugin::disk':
       disks => ['dm-2'],
     }
+    class { 'collectd::plugin::interface': }
+    class { 'collectd::plugin::df': }
 
 
     file_fragment { 'input collectd':
