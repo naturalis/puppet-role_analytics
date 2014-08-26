@@ -5,6 +5,7 @@ class role_analytics::logstash_client(
   $logstash_input   = '',
   $logstash_filter  = '',
   $use_collectd     = false,
+  $collectd_disks    = ['dm-2'],
 ){
 
 
@@ -42,7 +43,7 @@ class role_analytics::logstash_client(
     #class { 'collectd::plugin::cpu': }
     class { 'collectd::plugin::memory': }
     class { 'collectd::plugin::disk':
-      disks => ['dm-2'],
+      disks => $collectd_disks,
     }
     class { 'collectd::plugin::interface': }
     class { 'collectd::plugin::df': }
