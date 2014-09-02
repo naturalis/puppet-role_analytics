@@ -5,9 +5,11 @@ class role_analytics::logstash_client(
   $logstash_input   = '',
   $logstash_filter  = '',
   $use_collectd     = false,
-  $collectd_disks    = ['dm-2'],
+  $collectd_disks   = ['dm-2'],
+  $use_dashboard    = true,
+  $dashboard_name   = 'baseboard',
+  $kibana_ip        = '10.42.1.111',
 ){
-
 
   #$redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ipaddress)
   $redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ec2_public_ipv4)
@@ -76,8 +78,6 @@ class role_analytics::logstash_client(
     #   notify  => Service['collectd'],
     # }
     #
-
-
   }
 
   #apt::force { 'logstash':
@@ -85,13 +85,11 @@ class role_analytics::logstash_client(
   #  require => Apt::Source['logstash'],
   #}
 
-
   service {'logstash':
     ensure  => running,
     require => Package['logstash'],
     #require => Apt::Force['logstash'],
   }
-
 
   file_fragment { 'begin input':
       tag     => "LS_CONFIG_CLIENT_${cluster_name}",
@@ -99,8 +97,6 @@ class role_analytics::logstash_client(
 ',
       order   => 0,
   }
-
-
 
   file_fragment { 'input':
     tag     => "LS_CONFIG_CLIENT_${cluster_name}",
@@ -152,5 +148,21 @@ class role_analytics::logstash_client(
     require => Package['logstash'],
     #require => Apt::Force['logstash'],
     notify  => Service['logstash'],
+  }
+
+  if $use_dashboard {
+
+  file {"/tmp/${dashboard_name}.json":
+    content               => template("role_analytics/${dashboard_name}.json.erb"),
+    ensure                => "present",
+#   mode                  => "644",
+    notify                => Exec['install_dashboard']
+  }
+
+    exec { 'install_dashboard':
+    command               => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/${hostname} -T /tmp/${dashboard_name}.json",
+    refreshonly           => true,
+    }
+
   }
 }
