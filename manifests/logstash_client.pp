@@ -161,7 +161,7 @@ class role_analytics::logstash_client(
   }
 
     exec { 'install_dashboard':
-    command               => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/${hostname} -T /tmp/${dashboard_name}.json",
+    command               => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
     refreshonly           => true,
     }
 
