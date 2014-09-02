@@ -9,6 +9,7 @@ class role_analytics::logstash_client(
   $use_dashboard    = true,
   $dashboard_name   = 'baseboard',
   $kibana_ip        = '10.42.1.111',
+  $host_links       = undef,
 ){
 
   #$redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ipaddress)
