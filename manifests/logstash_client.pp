@@ -154,7 +154,7 @@ class role_analytics::logstash_client(
 
   file {"/tmp/${dashboard_name}.json":
     ensure                => "present",
-#   mode                  => "644",
+    mode                  => "644",
     content               => template("role_analytics/${dashboard_name}.json.erb"),
     notify                => Exec['install_dashboard'],
   }
