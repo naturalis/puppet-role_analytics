@@ -1,13 +1,13 @@
 class role_analytics::logstash_client(
   $cluster_name,
   $redis_password,
-	$version          = '1.4.2',
+	$version          = '1.4',
   $logstash_input   = '',
   $logstash_filter  = '',
-  $use_collectd     = false,
+  $use_collectd     = true,
   $collectd_disks   = ['dm-2'],
   $use_dashboard    = true,
-  $dashboard_name   = 'baseboard',
+  $dashboard_name   = 'host-baseboard',
   $kibana_ip        = '10.42.1.111',
   $host_links       = undef,
 ){
