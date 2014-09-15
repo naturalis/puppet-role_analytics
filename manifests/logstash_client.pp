@@ -1,7 +1,7 @@
 class role_analytics::logstash_client(
   $cluster_name,
   $redis_password,
-	$version          = '1.4',
+	$version          = '1.4.2',
   $logstash_input   = '',
   $logstash_filter  = '',
   $use_collectd     = false,
