@@ -1,6 +1,6 @@
 class role_analytics::elasticsearch_cluster(
   $cluster_name,
-	$es_version   = '1.3.2',
+	$es_version   = '1.1.1',
   $shards       = '3',
   $replicas     = '0',
   $es_memory_gb = false,
