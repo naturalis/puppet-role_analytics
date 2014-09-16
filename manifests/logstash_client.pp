@@ -64,7 +64,16 @@ class role_analytics::logstash_client(
 
           service {'logstash':
             ensure                  => running,
+            enable                  => true,
             require                 => Package['logstash'],
+            subscribe               => File['/etc/init/logstash.conf'],
+          }
+
+          service { 'collectd':
+            ensure                  => running,
+            enable                  => true,
+            require                 => Package['collectd'],
+            subscribe               => File['/etc/init/logstash.conf'],
           }
 
           file_fragment { 'begin input':
@@ -126,6 +135,19 @@ class role_analytics::logstash_client(
             mode                    => '0640',
             require                 => Package['logstash'],
             notify                  => Service['logstash'],
+          }
+
+          file_line { 'syslog_workaround':
+            ensure                  => "present"
+            path                    => '/etc/init/logstash.conf',
+            match                   => 'setgid logstash',
+            line                    => 'setgid adm',
+            notify                  => Exec['update_groups'],
+          }
+
+          exec { 'update_groups':
+            command                 => "/usr/sbin/usermod -a -G adm logstash",
+            refreshonly             => true,
           }
 
           if $use_dashboard {
