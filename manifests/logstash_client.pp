@@ -144,7 +144,7 @@ class role_analytics::logstash_client(
           file_line { 'syslog_workaround':
             ensure                  => "present",
             path                    => '/etc/init/logstash.conf',
-            match                   => 'setgid logstash',
+            match                   => 'setgid',
             line                    => 'setgid adm',
             notify                  => Exec['update_groups'],
           }
