@@ -66,7 +66,9 @@ class role_analytics::logstash_client(
             ensure                  => running,
             enable                  => true,
             require                 => Package['logstash'],
+            hasrestart              => true,
           }
+
           file { '/etc/init/logstash.conf':
             ensure => file,
             notify => [
