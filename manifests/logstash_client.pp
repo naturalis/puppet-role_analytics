@@ -149,6 +149,7 @@ class role_analytics::logstash_client(
           exec { 'update_groups':
             command                 => "/usr/sbin/usermod -a -G adm logstash",
             refreshonly             => true,
+            require                 => Package['logstash'],
           }
 
           if $use_dashboard {
