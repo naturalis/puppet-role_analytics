@@ -151,7 +151,11 @@ class role_analytics::logstash_client(
             command                 => "/usr/sbin/usermod -a -G adm logstash",
             refreshonly             => true,
             require                 => Package['logstash'],
-            notify                  => Service['logstash'],
+            notify                  => [
+               Service['logstash'],
+               Service['collectd'],
+               ],
+            onlyif                  => "/usr/bin/groups logstash | grep adm"
           }
 
           if $use_dashboard {
