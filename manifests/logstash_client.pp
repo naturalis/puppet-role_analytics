@@ -69,12 +69,12 @@ class role_analytics::logstash_client(
             subscribe               => File['/etc/init/logstash.conf'],
           }
 
-          service { 'collectd':
-            ensure                  => running,
-            enable                  => true,
-            require                 => Package['collectd'],
-            subscribe               => File['/etc/init/logstash.conf'],
-          }
+#          service { 'collectd':
+#            ensure                  => running,
+#            enable                  => true,
+#            require                 => Package['collectd'],
+#            subscribe               => File['/etc/init/logstash.conf'],
+#          }
 
           file_fragment { 'begin input':
               tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
