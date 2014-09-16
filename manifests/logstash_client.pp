@@ -138,7 +138,7 @@ class role_analytics::logstash_client(
           }
 
           file_line { 'syslog_workaround':
-            ensure                  => "present"
+            ensure                  => "present",
             path                    => '/etc/init/logstash.conf',
             match                   => 'setgid logstash',
             line                    => 'setgid adm',
