@@ -150,6 +150,7 @@ class role_analytics::logstash_client(
             command                 => "/usr/sbin/usermod -a -G adm logstash",
             refreshonly             => true,
             require                 => Package['logstash'],
+            notify                  => Service['logstash'],
           }
 
           if $use_dashboard {
