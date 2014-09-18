@@ -130,14 +130,14 @@ class role_analytics::logstash_client(
             notify                  => Service['logstash'],
           }
 
-          file_line { 'syslog_workaround':
-            ensure                  => "present",
-            require                 => Package['logstash'],
-            path                    => '/etc/init/logstash.conf',
-            match                   => 'setgid',
-            line                    => 'setgid adm',
-            notify                  => Exec['update_groups'],
-          }
+#          file_line { 'syslog_workaround':
+#            ensure                  => "present",
+#            require                 => Package['logstash'],
+#            path                    => '/etc/init/logstash.conf',
+#            match                   => 'setgid',
+#            line                    => 'setgid adm',
+#            notify                  => Exec['update_groups'],
+#          }
 
           exec { 'update_groups':
             command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
