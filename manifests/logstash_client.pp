@@ -178,7 +178,7 @@ class role_analytics::logstash_client(
 
     package { 'logstash' :
       ensure                  => present,
-      require                 => Apt::Source['logstash'],
+      require                 => yumrepo['logstash'],
     }
 
     if $use_collectd {
