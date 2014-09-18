@@ -14,7 +14,7 @@ class role_analytics::logstash_client(
 ){
 
   case $operatingsystem {
-    'Ubuntu': {
+    "Ubuntu": {
       if $operatingsystemrelease == '12.04' or $operatingsystemrelease == '14.04' {
 
           $redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ec2_public_ipv4)
@@ -306,7 +306,8 @@ class role_analytics::logstash_client(
     }
 
 #      notify { "Logging is not working with CentOS '$operatingsystemrelease' so disabled": }
-    }
+  }
+
     "default":  {
       notify { "Logging is not working with '$operatingsystem' - '$operatingsystemrelease' so disabled": }
     }
