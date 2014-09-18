@@ -135,15 +135,15 @@ class role_analytics::logstash_client(
             path                    => '/etc/init/logstash.conf',
             match                   => 'setgid',
             line                    => 'setgid adm',
-            notify                  => Exec['update_groups'],
+#            notify                  => Exec['update_groups'],
           }
 
-          exec { 'update_groups':
-            command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
-            refreshonly             => true,
-            require                 => Package['logstash'],
-            unless                  => "/usr/bin/groups logstash | grep adm"
-          }
+#          exec { 'update_groups':
+#            command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
+#            refreshonly             => true,
+#            require                 => Package['logstash'],
+#            unless                  => "/usr/bin/groups logstash | grep adm"
+#          }
 
           if $use_dashboard {
             file {"/tmp/${dashboard_name}.json":
