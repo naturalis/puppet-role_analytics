@@ -28,14 +28,13 @@ class role_analytics::logstash_client(
       }
 
       elsif $operatingsystemrelease == '6.5' {
-        apt::source { 'logstash':
-          location                => "http://packages.elasticsearch.org/logstash/${version}/centos",
-          release                 => 'stable',
-          repos                   => 'main',
-          key                     => 'D88E42B4',
-          key_server              => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
-          include_src             => false,
-        }
+        yumrepo { 'logstash':
+          descr    => 'Logstash Centos Repo',
+          baseurl  => "http://packages.elasticsearch.org/logstash/${version}/centos",
+          gpgcheck => 1,
+          gpgkey   => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
+          enabled  => 1,
+      }
       }
       else {
         notify { "Logging is not working with Ubuntu '$operatingsystemrelease' so disabled": }
