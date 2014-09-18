@@ -67,16 +67,6 @@ class role_analytics::logstash_client(
             enable                  => true,
             require                 => Package['logstash'],
             hasrestart              => true,
-            hasstatus               => true,
-            subscribe               => File['/etc/init/logstash.conf'],
-          }
-
-          file { '/etc/init/logstash.conf':
-            ensure => file,
-            notify => [
-               Service['logstash'],
-               Service['collectd'],
-               ],
           }
 
           file_fragment { 'begin input':
@@ -149,13 +139,9 @@ class role_analytics::logstash_client(
           }
 
           exec { 'update_groups':
-            command                 => "/usr/sbin/usermod -a -G adm logstash",
+            command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
             refreshonly             => true,
             require                 => Package['logstash'],
-            notify                  => [
-               Service['logstash'],
-               Service['collectd'],
-               ],
             onlyif                  => "/usr/bin/groups logstash | grep adm"
           }
 
