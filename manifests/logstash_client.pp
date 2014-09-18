@@ -142,7 +142,7 @@ class role_analytics::logstash_client(
             command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
             refreshonly             => true,
             require                 => Package['logstash'],
-            onlyif                  => "/usr/bin/groups logstash | grep adm"
+            unless                  => "/usr/bin/groups logstash | grep adm"
           }
 
           if $use_dashboard {
