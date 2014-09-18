@@ -17,6 +17,11 @@ class role_analytics::logstash_client(
     'Ubuntu', 'Centos': {
 
       if $operatingsystemrelease == '12.04' or $operatingsystemrelease == '14.04' {
+
+
+        $redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ec2_public_ipv4)
+        $redis_cluster_string = join($redis_cluster_members,'","')
+
         apt::source { 'logstash':
           location                => "http://packages.elasticsearch.org/logstash/${version}/debian",
           release                 => 'stable',
@@ -39,9 +44,6 @@ class role_analytics::logstash_client(
       else {
         notify { "Logging is not working with Ubuntu '$operatingsystemrelease' so disabled": }
       }
-
-      $redis_cluster_members = query_nodes("Class[Role_analytics::Redis]{cluster_name='${cluster_name}'}",ec2_public_ipv4)
-      $redis_cluster_string = join($redis_cluster_members,'","')
 
       package { 'logstash' :
         ensure                  => present,
