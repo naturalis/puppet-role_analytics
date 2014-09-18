@@ -68,6 +68,7 @@ class role_analytics::logstash_client(
             require                 => Package['logstash'],
             hasrestart              => true,
             hasstatus               => true,
+            subscribe               => File['/etc/init/logstash.conf'],
           }
 
           file { '/etc/init/logstash.conf':
