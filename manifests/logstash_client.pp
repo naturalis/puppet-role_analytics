@@ -27,7 +27,7 @@ class role_analytics::logstash_client(
         }
       }
 
-      elseif $operatingsystemrelease == '6.5' {
+      elsif $operatingsystemrelease == '6.5' {
         apt::source { 'logstash':
           location                => "http://packages.elasticsearch.org/logstash/${version}/centos",
           release                 => 'stable',
