@@ -280,9 +280,9 @@ class role_analytics::logstash_client(
       file_line { 'syslog_workaround':
         ensure                  => "present",
         require                 => Package['logstash'],
-        path                    => '/etc/init/logstash.conf',
-        match                   => 'setgid',
-        line                    => 'setgid adm',
+        path                    => '/etc/sysconfig/logstash',
+        match                   => 'LS_USER=',
+        line                    => 'LS_USER=root',
         notify                  => Exec['update_groups'],
       }
 
