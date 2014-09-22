@@ -189,9 +189,9 @@ class role_analytics::logstash_client(
           purge_config          => true,
         }
 
-#        class { 'collectd::plugin::network':
-#          server                => '127.0.0.1',
-#        }
+        class { 'collectd::plugin::network':
+          server                => '127.0.0.1',
+        }
 #        class { 'collectd::plugin::load': }
 #        class { 'collectd::plugin::memory': }
 #        class { 'collectd::plugin::disk':
