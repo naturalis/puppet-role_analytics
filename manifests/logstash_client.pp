@@ -201,32 +201,6 @@ class { 'collectd::plugin::interface': }
 class { 'collectd::plugin::df': }
 class {'collectd::plugin::uptime': }
 
-#      package { 'collectd':
-#        ensure => present,
-#        require => yumrepo['collectd'],
-#      }
-#      service { 'collectd':
-#        ensure     => running,
-#        enable     => true,
-#        hasrestart => true,
-#        require    => Package['collectd'];
-#      }
-#
-#      file {'/etc/collectd.d':
-#        ensure  => directory,
-#        recurse => true,
-#        purge   => true,
-#        notify  => Service['collectd'];
-#      }
-#
-#      file {'collectd_conf':
-#        ensure  => present,
-#        path    => '/etc/collectd.conf',
-#        content => template('role_analytics/collectd_simple.erb'),
-#        notify  => Service['collectd'],
-#        require => [ Package['collectd'], File['/etc/collectd.d']];
-#      }
-#
       file_fragment { 'input collectd':
         tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
         content               => '  collectd { tags => ["collectd"] }
