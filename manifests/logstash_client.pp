@@ -183,11 +183,11 @@ class role_analytics::logstash_client(
 
       if $use_collectd {
 
-#        class { '::collectd':
-#          purge                 => true,
-#          recurse               => true,
-#          purge_config          => true,
-#        }
+        class { '::collectd':
+          purge                 => true,
+          recurse               => true,
+          purge_config          => true,
+        }
 
 #        class { 'collectd::plugin::network':
 #          server                => '127.0.0.1',
