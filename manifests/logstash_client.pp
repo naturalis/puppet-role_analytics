@@ -224,26 +224,26 @@ class role_analytics::logstash_client(
         hasrestart              => true,
       }
 
-#      file_fragment { 'begin input':
-#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-#          content               => 'input {
-#    ',
-#          order                 => 0,
-#      }
+      file_fragment { 'begin input':
+          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+          content               => 'input {
+    ',
+          order                 => 0,
+      }
 
-#      file_fragment { 'input':
-#        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
-#        content                 => $logstash_input,
-#        order                   => 200,
-#      }
+      file_fragment { 'input':
+        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
+        content                 => $logstash_input,
+        order                   => 200,
+      }
 
-#      file_fragment { 'end_input':
-#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-#          content               => '
-#    }
-#    ',
-#          order                 => 398,
-#      }
+      file_fragment { 'end_input':
+          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+          content               => '
+    }
+    ',
+          order                 => 398,
+      }
 
 #      file_fragment { 'begin filter':
 #          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
