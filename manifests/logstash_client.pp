@@ -13,7 +13,7 @@ class role_analytics::logstash_client(
   $host_specific                    = undef,
 ){
 
-# if ! defined(Class["role_analytics::logstash_indexer"]) {
+if ! defined(Class["role_analytics::logstash_indexer"]) {
 
   case $operatingsystem {
     'Ubuntu', 'CentOS': {
@@ -205,5 +205,5 @@ class role_analytics::logstash_client(
       notify { "Logging is not working with '$operatingsystem' - '$operatingsystemrelease' so disabled": }
     }
   }
-# }
+}
 }
