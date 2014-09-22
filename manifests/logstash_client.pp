@@ -211,31 +211,13 @@ class role_analytics::logstash_client(
         require => [ Package['collectd'], File['/etc/collectd.d']];
       }
 
-#        class { '::collectd':
-#          purge                 => true,
-#          recurse               => true,
-#          purge_config          => true,
+#        file_fragment { 'input collectd':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => '  collectd { tags => ["collectd"] }
+#    ',
+#          order                 => 100,
 #        }
-
-#        class { 'collectd::plugin::network':
-#          server                => '127.0.0.1',
-#        }
-#        class { 'collectd::plugin::load': }
-#        class { 'collectd::plugin::memory': }
-#        class { 'collectd::plugin::disk':
-#          disks                 => $collectd_disks,
-#        }
-#        class { 'collectd::plugin::interface': }
-#        class { 'collectd::plugin::df': }
-#        class {'collectd::plugin::uptime': }
-
-        file_fragment { 'input collectd':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => '  collectd { tags => ["collectd"] }
-    ',
-          order                 => 100,
-        }
-      }
+#      }
 
       service {'logstash':
         ensure                  => running,
@@ -244,66 +226,66 @@ class role_analytics::logstash_client(
         hasrestart              => true,
       }
 
-      file_fragment { 'begin input':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => 'input {
-    ',
-          order                 => 0,
+#      file_fragment { 'begin input':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => 'input {
+#    ',
+#          order                 => 0,
+#      }
+
+#      file_fragment { 'input':
+#        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
+#        content                 => $logstash_input,
+#        order                   => 200,
+#      }
+
+#      file_fragment { 'end_input':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => '
+#    }
+#    ',
+#          order                 => 398,
+#      }
+
+#      file_fragment { 'begin filter':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => 'filter {
+#    ',
+#          order                 => 399,
+#      }
+
+#      file_fragment { 'filter':
+#        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
+#        content                 => $logstash_filter,
+#        order                   => 500,
       }
 
-      file_fragment { 'input':
-        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
-        content                 => $logstash_input,
-        order                   => 200,
-      }
+#      file_fragment { 'end filter':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => '
+#    }
+#    ',
+#          order                 => 698,
+#      }
 
-      file_fragment { 'end_input':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => '
-    }
-    ',
-          order                 => 398,
-      }
+#      file_fragment { 'output':
+#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+#          content               => template('role_analytics/logstash_redis_output.erb'),
+#          order                 => 699,
+#      }
 
-      file_fragment { 'begin filter':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => 'filter {
-    ',
-          order                 => 399,
-      }
+#      File_fragment <<| tag == "LS_CONFIG_CLIENT_${cluster_name}" |>> {
+#        before                  => File_concat['/etc/logstash/conf.d/logstash_client.conf']
+#      }
 
-      file_fragment { 'filter':
-        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
-        content                 => $logstash_filter,
-        order                   => 500,
-      }
-
-      file_fragment { 'end filter':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => '
-    }
-    ',
-          order                 => 698,
-      }
-
-      file_fragment { 'output':
-          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-          content               => template('role_analytics/logstash_redis_output.erb'),
-          order                 => 699,
-      }
-
-      File_fragment <<| tag == "LS_CONFIG_CLIENT_${cluster_name}" |>> {
-        before                  => File_concat['/etc/logstash/conf.d/logstash_client.conf']
-      }
-
-      file_concat { '/etc/logstash/conf.d/logstash_client.conf':
-        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
-        owner                   => 'logstash',
-        group                   => 'logstash',
-        mode                    => '0640',
-        require                 => Package['logstash'],
-        notify                  => Service['logstash'],
-      }
+#      file_concat { '/etc/logstash/conf.d/logstash_client.conf':
+#        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
+#        owner                   => 'logstash',
+#        group                   => 'logstash',
+#        mode                    => '0640',
+#        require                 => Package['logstash'],
+#        notify                  => Service['logstash'],
+#      }
 
       file_line { 'syslog_workaround':
         ensure                  => "present",
