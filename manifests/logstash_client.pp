@@ -178,12 +178,10 @@ class role_analytics::logstash_client(
 
       package { 'logstash' :
         ensure                  => present,
-        require                 => yumrepo['logstash'],
+#        require                 => yumrepo['logstash'],
       }
 
       if $use_collectd {
-
-
 
       package { 'collectd':
         ensure => present,
