@@ -183,23 +183,23 @@ class role_analytics::logstash_client(
 
       if $use_collectd {
 
-        class { '::collectd':
-          purge        => true,
-          recurse      => true,
-          purge_config => true,
-        }
-#
-#class { 'collectd::plugin::network':
-#  server                => '127.0.0.1',
-#}
-#class { 'collectd::plugin::load': }
-#class { 'collectd::plugin::memory': }
-#class { 'collectd::plugin::disk':
-#  disks                 => $collectd_disks,
-#}
-#class { 'collectd::plugin::interface': }
-#class { 'collectd::plugin::df': }
-#class {'collectd::plugin::uptime': }
+class { '::collectd':
+  purge                 => true,
+  recurse               => true,
+  purge_config          => true,
+}
+
+class { 'collectd::plugin::network':
+  server                => '127.0.0.1',
+}
+class { 'collectd::plugin::load': }
+class { 'collectd::plugin::memory': }
+class { 'collectd::plugin::disk':
+  disks                 => $collectd_disks,
+}
+class { 'collectd::plugin::interface': }
+class { 'collectd::plugin::df': }
+class {'collectd::plugin::uptime': }
 
 
 
