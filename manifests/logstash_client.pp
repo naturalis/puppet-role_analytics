@@ -187,7 +187,7 @@ class role_analytics::logstash_client(
 
       package { 'collectd':
         ensure => present,
-        require yumrepo['collectd'],
+        require => yumrepo['collectd'],
       }
       service { 'collectd':
         ensure     => running,
