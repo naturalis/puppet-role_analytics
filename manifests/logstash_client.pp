@@ -17,7 +17,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
 
   case $operatingsystem {
     'Ubuntu', 'CentOS': {
-      if $operatingsystemrelease == '12.04' or $operatingsystemrelease == '14.04' or $operatingsystemrelease == '6.5' {
+      if $operatingsystemrelease == '12.04' or $operatingsystemrelease == '14.04' or $operatingsystemrelease == '6.4' or $operatingsystemrelease == '6.5' {
 
       case $operatingsystem {
         'Ubuntu': {
