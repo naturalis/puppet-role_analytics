@@ -64,7 +64,7 @@ class role_analytics::logstash_client(
             }
 
             class { 'collectd::plugin::network':
-            #  server                => '127.0.0.1',
+              server                => '127.0.0.1',
             }
             class { 'collectd::plugin::load': }
             class { 'collectd::plugin::memory': }
