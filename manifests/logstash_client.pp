@@ -13,6 +13,8 @@ class role_analytics::logstash_client(
   $host_specific                    = undef,
 ){
 
+if ! defined(Class["role_analytics::logstash_indexer"]) {
+
   case $operatingsystem {
     'Ubuntu', 'CentOS': {
       if $operatingsystemrelease == '12.04' or $operatingsystemrelease == '14.04' or $operatingsystemrelease == '6.5' {
@@ -203,4 +205,5 @@ class role_analytics::logstash_client(
       notify { "Logging is not working with '$operatingsystem' - '$operatingsystemrelease' so disabled": }
     }
   }
+}
 }
