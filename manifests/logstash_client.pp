@@ -183,15 +183,43 @@ class role_analytics::logstash_client(
 
       if $use_collectd {
 
-        class { '::collectd':
-          purge                 => true,
-          recurse               => true,
-          purge_config          => true,
-        }
 
-        class { 'collectd::plugin::network':
-          server                => '127.0.0.1',
-        }
+
+      package { 'collectd':
+        ensure => present,
+        require yumrepo['collectd'],
+      }
+      service { 'collectd':
+        ensure     => running,
+        enable     => true,
+        hasrestart => true,
+        require    => Package['collectd'];
+      }
+
+      file {'/etc/collectd.d':
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        notify  => Service['collectd'];
+      }
+
+      file {'collectd_conf':
+        ensure  => present,
+        path    => '/etc/collectd.conf',
+        content => template('role_analytics/collectd_simple.erb'),
+        notify  => Service['collectd'],
+        require => [ Package['collectd'], File['/etc/collectd.d']];
+      }
+
+#        class { '::collectd':
+#          purge                 => true,
+#          recurse               => true,
+#          purge_config          => true,
+#        }
+
+#        class { 'collectd::plugin::network':
+#          server                => '127.0.0.1',
+#        }
 #        class { 'collectd::plugin::load': }
 #        class { 'collectd::plugin::memory': }
 #        class { 'collectd::plugin::disk':

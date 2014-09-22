@@ -1,3 +1,15 @@
 Hostname    "<%= @fqdn %>"
+LoadPlugin network
+<Plugin network>
+	Server "127.0.0.1" "25826"
+	Listen "*" "25826"
+</Plugin>
 LoadPlugin load
 LoadPlugin memory
+LoadPlugin disk
+<Plugin disk>
+	Disks "<%= @collectd_disks %>"
+</Plugin>
+LoadPlugin interface
+LoadPlugin df
+LoadPlugin uptime
