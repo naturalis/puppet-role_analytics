@@ -209,13 +209,13 @@ class role_analytics::logstash_client(
         require => [ Package['collectd'], File['/etc/collectd.d']];
       }
 
-#        file_fragment { 'input collectd':
-#          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
-#          content               => '  collectd { tags => ["collectd"] }
-#    ',
-#          order                 => 100,
-#        }
-#      }
+      file_fragment { 'input collectd':
+        tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
+        content               => '  collectd { tags => ["collectd"] }
+    ',
+        order                 => 100,
+      }
+      }
 
       service {'logstash':
         ensure                  => running,
@@ -256,7 +256,7 @@ class role_analytics::logstash_client(
 #        tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
 #        content                 => $logstash_filter,
 #        order                   => 500,
-      }
+#      }
 
 #      file_fragment { 'end filter':
 #          tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
