@@ -183,32 +183,52 @@ class role_analytics::logstash_client(
 
       if $use_collectd {
 
-      package { 'collectd':
-        ensure => present,
+class { '::collectd':
+  purge                 => true,
+  recurse               => true,
+  purge_config          => true,
+}
+
+class { 'collectd::plugin::network':
+  server                => '127.0.0.1',
+}
+class { 'collectd::plugin::load': }
+class { 'collectd::plugin::memory': }
+class { 'collectd::plugin::disk':
+  disks                 => $collectd_disks,
+}
+class { 'collectd::plugin::interface': }
+class { 'collectd::plugin::df': }
+class {'collectd::plugin::uptime': }
+
+
+
+#      package { 'collectd':
+#        ensure => present,
 #        require => yumrepo['collectd'],
-      }
-      service { 'collectd':
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        require    => Package['collectd'];
-      }
-
-      file {'/etc/collectd.d':
-        ensure  => directory,
-        recurse => true,
-        purge   => true,
-        notify  => Service['collectd'];
-      }
-
-      file {'collectd_conf':
-        ensure  => present,
-        path    => '/etc/collectd.conf',
-        content => template('role_analytics/collectd_simple.erb'),
-        notify  => Service['collectd'],
-        require => [ Package['collectd'], File['/etc/collectd.d']];
-      }
-
+#      }
+#      service { 'collectd':
+#        ensure     => running,
+#        enable     => true,
+#        hasrestart => true,
+#        require    => Package['collectd'];
+#      }
+#
+#      file {'/etc/collectd.d':
+#        ensure  => directory,
+#        recurse => true,
+#        purge   => true,
+#        notify  => Service['collectd'];
+#      }
+#
+#      file {'collectd_conf':
+#        ensure  => present,
+#        path    => '/etc/collectd.conf',
+#        content => template('role_analytics/collectd_simple.erb'),
+#        notify  => Service['collectd'],
+#        require => [ Package['collectd'], File['/etc/collectd.d']];
+#      }
+#
       file_fragment { 'input collectd':
         tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
         content               => '  collectd { tags => ["collectd"] }
