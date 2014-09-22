@@ -10,7 +10,7 @@ class role_analytics::logstash_client(
   $use_dashboard                    = true,
   $dashboard_name                   = 'host-baseboard',
   $kibana_ip                        = '10.42.1.111',
-  $host_links                       = undef,
+  $host_specific                    = undef,
 ){
 
   case $operatingsystem {
