@@ -190,7 +190,7 @@ class { '::collectd':
 }
 
 class { 'collectd::plugin::network':
-  server                => '127.0.0.1',
+#  server                => '127.0.0.1',
 }
 class { 'collectd::plugin::load': }
 class { 'collectd::plugin::memory': }
@@ -200,8 +200,6 @@ class { 'collectd::plugin::disk':
 class { 'collectd::plugin::interface': }
 class { 'collectd::plugin::df': }
 class {'collectd::plugin::uptime': }
-
-
 
 #      package { 'collectd':
 #        ensure => present,
