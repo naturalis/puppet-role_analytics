@@ -18,6 +18,9 @@ filter {
         match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
       }
   }
+  if [collectd_type]== "uptime" {
+    ruby { code => "event['value_h'] = event['value']/3600" }
+  }
 }
 
 output {
