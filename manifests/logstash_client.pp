@@ -93,9 +93,8 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
 
             package { 'collectd':
               ensure  => latest,
-              require => Yumrepo['mozilla'];
             }
-            
+
             service { 'collectd':
               ensure     => running,
               enable     => true,
