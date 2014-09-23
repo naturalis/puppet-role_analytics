@@ -91,11 +91,6 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           }
           'CentOS': {
 
-
-            package { 'logstash' :
-              ensure                  => present,
-              require                 => yumrepo['logstash'],
-            }
             package { 'collectd':
               ensure => present,
             }
