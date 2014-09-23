@@ -90,11 +90,12 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             }
           }
           'CentOS': {
-            
+
             package { 'collectd':
               provider => 'rpm',
               ensure => installed,
               source => "http://dl.marmotte.net/rpms/redhat/el6/x86_64/collectd-5.4.0-1.el6/collectd-5.4.0-1.el6.x86_64.rpm",
+            }
 
             service { 'collectd':
               ensure     => 'running',
