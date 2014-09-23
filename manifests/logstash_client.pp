@@ -40,7 +40,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
         }
 
         'CentOS': {
-          $redis_cluster_string = join(['10.42.1.118','10.42.1.116','10.42.1.117'], ",")
+          $redis_cluster_string = join(["10.42.1.118","10.42.1.116","10.42.1.117"],'","')
 
           yumrepo { 'logstash':
             descr    => 'Logstash Centos Repo',
