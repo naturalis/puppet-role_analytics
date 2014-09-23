@@ -94,7 +94,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             package { 'collectd':
               ensure => present,
             }
-            Yumrepo['collectd'] -> Package['collectd']
+          
             service { 'collectd':
               ensure     => running,
               enable     => true,
