@@ -92,7 +92,8 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           'CentOS': {
 
             package { 'collectd5':
-              ensure => 'latest',
+              ensure => 'installed',
+              source => 'http://pkgs.repoforge.org/collectd/collectd-5.1.0-1.el6.rft.x86_64.rpm',
             }
 
             service { 'collectd5':
