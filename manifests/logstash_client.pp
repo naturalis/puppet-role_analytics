@@ -91,11 +91,18 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           }
           'CentOS': {
 
-            package { 'collectd':
-              provider => 'rpm',
-              ensure => installed,
-              source => "http://dl.marmotte.net/rpms/redhat/el6/x86_64/collectd-5.4.0-1.el6/collectd-5.4.0-1.el6.x86_64.rpm",
-            }
+          yumrepo { 'pakk':
+            descr    => 'pakk Centos Repo',
+            baseurl  => "http://pakk.96b.it/repositories/el6/x86_64/",
+            gpgcheck => 1,
+            gpgkey   => 'http://pakk.96b.it/RPM-GPG-KEY-pakk',
+            enabled  => 1,
+          }
+
+          package { 'collectd' :
+            ensure                  => present,
+            require                 => yumrepo['pakk'],
+          }
 
             service { 'collectd':
               ensure     => 'running',
@@ -118,7 +125,6 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               notify  => Service['collectd'],
               require => [ Package['collectd'], File['/etc/collectd.d']];
             }
-
             class { 'collectd::plugin::load': }
             class { 'collectd::plugin::memory': }
             class { 'collectd::plugin::disk':
@@ -127,6 +133,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             class { 'collectd::plugin::interface': }
             class { 'collectd::plugin::df': }
             class { 'collectd::plugin::uptime': }
+
           }
           }
           }
