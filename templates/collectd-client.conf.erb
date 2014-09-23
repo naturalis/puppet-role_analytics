@@ -1,10 +1,41 @@
 #Hostname localhost
 FQDNLookup true
-
 #BaseDir "/var/lib/collectd"
 #PluginDir "/usr/lib/collectd"
 #TypesDB "/usr/share/collectd/types.db" "/etc/collectd/my_types.db"
 Interval 10
 Timeout 2
 ReadThreads 5
-Include "/etc/collectd.d/*.conf"
+
+LoadPlugin df
+<Plugin df>
+  IgnoreSelected false
+  ReportByDevice false
+  ReportInodes true
+  ReportReserved true
+  ValuesAbsolute true
+  ValuesPercentage false
+</Plugin>
+LoadPlugin df
+<Plugin df>
+  IgnoreSelected false
+  ReportByDevice false
+  ReportInodes true
+  ReportReserved true
+  ValuesAbsolute true
+  ValuesPercentage false
+</Plugin>
+LoadPlugin disk
+<Plugin disk>
+  Disk  "vda1"
+  IgnoreSelected false
+</Plugin>
+LoadPlugin interface
+<Plugin interface>
+  IgnoreSelected false
+</Plugin>
+LoadPlugin load
+LoadPlugin memory
+LoadPlugin uptime
+
+# Include "/etc/collectd.d/*.conf"
