@@ -100,7 +100,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               enable     => true,
               hasrestart => true,
               hasstatus  => true,
-              require    => Package['collectd'];
+              require    => Package['collectd5'];
             }
 
             file {'/etc/collectd.d':
