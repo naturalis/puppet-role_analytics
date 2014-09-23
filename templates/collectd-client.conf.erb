@@ -1,23 +1,10 @@
-#Hostname "<%= @hostname %>"
+#Hostname localhost
 FQDNLookup true
+
 #BaseDir "/var/lib/collectd"
 #PluginDir "/usr/lib/collectd"
 #TypesDB "/usr/share/collectd/types.db" "/etc/collectd/my_types.db"
 Interval 10
+Timeout 2
 ReadThreads 5
-
-LoadPlugin interface
-LoadPlugin load
-LoadPlugin memory
-LoadPlugin df
-LoadPlugin disk
-LoadPlugin uptime
-
-<Plugin interface>
-    Interface "eth0"
-    IgnoreSelected false
-</Plugin>
-
-#Include "/etc/collectd.d"
-#Include "/etc/collectd/filters.conf"
-#Include "/etc/collectd/thresholds.conf"
+Include "/etc/collectd.d/*.conf"

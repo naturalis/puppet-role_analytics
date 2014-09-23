@@ -69,19 +69,6 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               purge_config          => true,
             }
 
-      #      class { 'collectd::plugin::network':
-      #        server       =>  '127.0.0.1',
-      #      }
-
-            class { 'collectd::plugin::load': }
-            class { 'collectd::plugin::memory': }
-            class { 'collectd::plugin::disk':
-              disks                 => $collectd_disks,
-            }
-            class { 'collectd::plugin::interface': }
-            class { 'collectd::plugin::df': }
-            class { 'collectd::plugin::uptime': }
-
             file_fragment { 'input collectd':
               tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
               content               => '  collectd { tags => ["collectd"] }
@@ -95,20 +82,6 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               ensure => 'latest',
               source => 'http://dl.marmotte.net/rpms/redhat/el6/x86_64/collectd-5.4.0-1.el6/collectd-5.4.0-1.el6.x86_64.rpm',
             }
-
-        
-      #      class { 'collectd::plugin::network':
-      #        server       =>  '127.0.0.1',
-      #      }
-
-            class { 'collectd::plugin::load': }
-            class { 'collectd::plugin::memory': }
-            class { 'collectd::plugin::disk':
-              disks                 => $collectd_disks,
-            }
-            class { 'collectd::plugin::interface': }
-            class { 'collectd::plugin::df': }
-            class { 'collectd::plugin::uptime': }
 
             service { 'collectd':
               ensure     => 'running',
@@ -132,6 +105,20 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               require => [ Package['collectd'], File['/etc/collectd.d']];
             }
           }
+
+#      class { 'collectd::plugin::network':
+#        server       =>  '127.0.0.1',
+#      }
+
+          class { 'collectd::plugin::load': }
+          class { 'collectd::plugin::memory': }
+          class { 'collectd::plugin::disk':
+            disks                 => $collectd_disks,
+          }
+          class { 'collectd::plugin::interface': }
+          class { 'collectd::plugin::df': }
+          class { 'collectd::plugin::uptime': }
+
           }
           }
 
