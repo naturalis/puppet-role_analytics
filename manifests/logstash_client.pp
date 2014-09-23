@@ -59,15 +59,19 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
       }
           if $use_collectd {
 
+
+        case $operatingsystem {
+          'Ubuntu': {
+
             class { '::collectd':
               purge                 => true,
               recurse               => true,
               purge_config          => true,
             }
 
-  #          class { 'collectd::plugin::network':
-  #            server       =>  '127.0.0.1',
-  #          }
+            class { 'collectd::plugin::network':
+              server       =>  '127.0.0.1',
+            }
 
             class { 'collectd::plugin::load': }
             class { 'collectd::plugin::memory': }
@@ -77,8 +81,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             class { 'collectd::plugin::interface': }
             class { 'collectd::plugin::df': }
             class { 'collectd::plugin::uptime': }
-        case $operatingsystem {
-          'Ubuntu': {
+
             file_fragment { 'input collectd':
               tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
               content               => '  collectd { tags => ["collectd"] }
@@ -86,7 +89,37 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               order                 => 100,
             }
           }
-          'CentOS': {}
+          'CentOS': {
+
+
+            package { 'logstash' :
+              ensure                  => present,
+              require                 => yumrepo['logstash'],
+            }
+            package { 'collectd':
+              ensure => present,
+            }
+            Yumrepo['collectd'] -> Package['collectd']
+            service { 'collectd':
+              ensure     => running,
+              enable     => true,
+              hasrestart => true,
+              require    => Package['collectd'];
+            }
+            file {'/etc/collectd.d':
+              ensure  => directory,
+              recurse => true,
+              purge   => true,
+              notify  => Service['collectd'];
+            }
+            file {'collectd_conf':
+              ensure  => present,
+              path    => '/etc/collectd.conf',
+              content => template('role_analytics/collectd-client.conf.erb'),
+              notify  => Service['collectd'],
+              require => [ Package['collectd'], File['/etc/collectd.d']];
+            }
+          }
           }
           }
 
