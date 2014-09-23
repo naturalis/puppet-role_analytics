@@ -1,6 +1,7 @@
 #Hostname localhost
 FQDNLookup true
-#BaseDir "/var/lib/collectd"
+BaseDir     "/var/lib/collectd5"
+PIDFile     "/var/run/collectd5.pid"
 #PluginDir "/usr/lib/collectd"
 #TypesDB "/usr/share/collectd/types.db" "/etc/collectd/my_types.db"
 Interval 10
@@ -8,34 +9,28 @@ Timeout 2
 ReadThreads 5
 
 LoadPlugin df
-<Plugin df>
-  IgnoreSelected false
-  ReportByDevice false
-  ReportInodes true
-  ReportReserved true
-  ValuesAbsolute true
-  ValuesPercentage false
-</Plugin>
-LoadPlugin df
-<Plugin df>
-  IgnoreSelected false
-  ReportByDevice false
-  ReportInodes true
-  ReportReserved true
-  ValuesAbsolute true
-  ValuesPercentage false
-</Plugin>
 LoadPlugin disk
 <Plugin disk>
-  Disk  "vda1"
+  Disk  "<%= @collectd_disks %>"
   IgnoreSelected false
 </Plugin>
 LoadPlugin interface
-<Plugin interface>
-  IgnoreSelected false
-</Plugin>
 LoadPlugin load
 LoadPlugin memory
+LoadPlugin network
 LoadPlugin uptime
-
-# Include "/etc/collectd.d/*.conf"
+<Plugin df>
+  IgnoreSelected false
+  ReportByDevice false
+  ReportInodes true
+  ReportReserved true
+  ValuesAbsolute true
+  ValuesPercentage false
+</Plugin>
+<Plugin interface>
+        Interface "eth0"
+</Plugin>
+<Plugin network>
+        <Server "127.0.0.1">
+        </Server>
+</Plugin>
