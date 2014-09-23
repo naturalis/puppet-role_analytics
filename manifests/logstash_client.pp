@@ -95,7 +95,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               ensure  => present,
             }
 
-            service { 'collectd':
+            service { 'collectd5':
               ensure     => running,
               enable     => true,
               hasrestart => true,
@@ -105,13 +105,13 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               ensure  => directory,
               recurse => true,
               purge   => true,
-              notify  => Service['collectd'];
+              notify  => Service['collectd5'];
             }
             file {'collectd_conf':
               ensure  => present,
               path    => '/etc/collectd.conf',
               content => template('role_analytics/collectd-client.conf.erb'),
-              notify  => Service['collectd'],
+              notify  => Service['collectd5'],
               require => [ Package['collectd5'], File['/etc/collectd.d']];
             }
           }
