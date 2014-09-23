@@ -71,9 +71,9 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
 
             class { 'collectd::plugin::load': }
             class { 'collectd::plugin::memory': }
-  #          class { 'collectd::plugin::disk':
-  #            disks                 => $collectd_disks,
-  #          }
+            class { 'collectd::plugin::disk':
+              disks                 => $collectd_disks,
+            }
             class { 'collectd::plugin::interface': }
             class { 'collectd::plugin::df': }
             class { 'collectd::plugin::uptime': }
