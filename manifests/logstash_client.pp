@@ -99,40 +99,32 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             enabled  => 1,
           }
 
-          package { 'collectd' :
+          package { 'collectd5' :
             ensure                  => present,
             require                 => yumrepo['pakk'],
           }
 
-            service { 'collectd':
+            service { 'collectd5':
               ensure     => 'running',
               enable     => true,
               hasrestart => true,
               hasstatus  => true,
-              require    => Package['collectd'];
+              require    => Package['collectd5'];
             }
 
             file {'/etc/collectd.d':
               ensure  => directory,
               recurse => true,
               purge   => true,
-              notify  => Service['collectd'];
+              notify  => Service['collectd5'];
             }
             file {'collectd_conf':
               ensure  => present,
-              path    => '/etc/collectd.conf',
+              path    => '/etc/collectd5.conf',
               content => template('role_analytics/collectd-client.conf.erb'),
-              notify  => Service['collectd'],
-              require => [ Package['collectd'], File['/etc/collectd.d']];
+              notify  => Service['collectd5'],
+              require => [ Package['collectd5'], File['/etc/collectd.d']];
             }
-            class { 'collectd::plugin::load': }
-            class { 'collectd::plugin::memory': }
-            class { 'collectd::plugin::disk':
-              disks                 => $collectd_disks,
-            }
-            class { 'collectd::plugin::interface': }
-            class { 'collectd::plugin::df': }
-            class { 'collectd::plugin::uptime': }
 
           }
           }
