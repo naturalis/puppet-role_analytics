@@ -92,9 +92,10 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           'CentOS': {
 
             package { 'collectd':
-              ensure => present,
+              ensure  => latest,
+              require => Yumrepo['mozilla'];
             }
-            Yumrepo['collectd'] -> Package['collectd']
+            
             service { 'collectd':
               ensure     => running,
               enable     => true,
