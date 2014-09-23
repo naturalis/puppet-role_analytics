@@ -206,13 +206,12 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             }
             'CentOS': {
 
-              file_concat { '/etc/logstash/conf.d/logstash_client.conf':
-                tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
-                owner                   => 'logstash',
-                group                   => 'logstash',
-                mode                    => '0640',
-                require                 => Package['logstash'],
-                notify                  => Service['logstash'],
+              file {'logstash_client.conf':
+                ensure  => present,
+                path    => '/etc/logstash/conf.d/logstash_client.conf',
+                content => template('role_analytics/logstash_client.conf.erb'),
+                notify  => Service['logstash'],
+                require => Package['logstash'],
               }
 
               file_line { 'syslog_workaround':
