@@ -203,6 +203,13 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
                 line                    => 'setgid adm',
                 notify                  => Exec['update_groups'],
               }
+
+              exec { 'update_groups':
+                command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
+                refreshonly             => true,
+                require                 => Package['logstash'],
+                unless                  => "/usr/bin/groups logstash | grep adm"
+              }
             }
             'CentOS': {
 
@@ -222,14 +229,14 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
                 line                    => 'LS_USER=root',
                 notify                  => Exec['update_groups'],
               }
-            }
-          }
 
-          exec { 'update_groups':
-            command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
-            refreshonly             => true,
-            require                 => Package['logstash'],
-            unless                  => "/usr/bin/groups logstash | grep adm"
+              exec { 'update_groups':
+                command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd5 restart",
+                refreshonly             => true,
+                require                 => Package['logstash'],
+                unless                  => "/usr/bin/groups logstash | grep adm"
+              }
+            }
           }
 
           if $use_dashboard {
