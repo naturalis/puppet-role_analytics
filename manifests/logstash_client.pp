@@ -91,31 +91,31 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           }
           'CentOS': {
 
-            package { 'collectd5':
-              ensure => 'installed',
+            package { 'collectd':
+              ensure => 'latest',
               source => 'http://dl.marmotte.net/rpms/redhat/el6/x86_64/collectd-5.4.0-1.el6/collectd-5.4.0-1.el6.x86_64.rpm',
             }
 
-            service { 'collectd5':
+            service { 'collectd':
               ensure     => 'running',
               enable     => true,
               hasrestart => true,
               hasstatus  => true,
-              require    => Package['collectd5'];
+              require    => Package['collectd'];
             }
 
             file {'/etc/collectd.d':
               ensure  => directory,
               recurse => true,
               purge   => true,
-              notify  => Service['collectd5'];
+              notify  => Service['collectd'];
             }
             file {'collectd_conf':
               ensure  => present,
               path    => '/etc/collectd.conf',
               content => template('role_analytics/collectd-client.conf.erb'),
-              notify  => Service['collectd5'],
-              require => [ Package['collectd5'], File['/etc/collectd.d']];
+              notify  => Service['collectd'],
+              require => [ Package['collectd'], File['/etc/collectd.d']];
             }
           }
           }
