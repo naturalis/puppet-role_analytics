@@ -69,9 +69,9 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
 #              server       =>  '127.0.0.1',
 #            }
 
-            class { '::collectd::plugin::load': }
-            class { '::collectd::plugin::memory': }
-            class { '::collectd::plugin::disk':
+            class { 'collectd::plugin::load': }
+            class { 'collectd::plugin::memory': }
+            class { 'collectd::plugin::disk':
               disks                 => $collectd_disks,
             }
             class { '::collectd::plugin::interface': }
