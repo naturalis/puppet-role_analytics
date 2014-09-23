@@ -91,8 +91,8 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           }
           'CentOS': {
 
-            package { 'collectd':
-              ensure  => latest,
+            package { 'collectd5':
+              ensure  => present,
             }
 
             service { 'collectd':
