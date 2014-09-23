@@ -99,7 +99,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               ensure     => running,
               enable     => true,
               hasrestart => true,
-              require    => Package['collectd'];
+              require    => Package['collectd5'];
             }
             file {'/etc/collectd.d':
               ensure  => directory,
@@ -112,7 +112,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               path    => '/etc/collectd.conf',
               content => template('role_analytics/collectd-client.conf.erb'),
               notify  => Service['collectd'],
-              require => [ Package['collectd'], File['/etc/collectd.d']];
+              require => [ Package['collectd5'], File['/etc/collectd.d']];
             }
           }
           }
