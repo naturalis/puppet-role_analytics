@@ -74,14 +74,14 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           #    serverport   =>  '25826',
             }
 
-            class { 'collectd::plugin::load': }
-            class { 'collectd::plugin::memory': }
-            class { 'collectd::plugin::disk':
+            class { '::collectd::plugin::load': }
+            class { '::collectd::plugin::memory': }
+            class { '::collectd::plugin::disk':
               disks                 => $collectd_disks,
             }
-            class { 'collectd::plugin::interface': }
-            class { 'collectd::plugin::df': }
-            class {'collectd::plugin::uptime': }
+            class { '::collectd::plugin::interface': }
+            class { '::collectd::plugin::df': }
+            class { '::collectd::plugin::uptime': }
 
             file_fragment { 'input collectd':
               tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
