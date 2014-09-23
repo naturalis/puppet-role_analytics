@@ -69,7 +69,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               purge_config          => true,
             }
 
-            class { '::collectd::plugin::network':
+            class { 'collectd::plugin::network':
               server       =>  '127.0.0.1',
              }
 
