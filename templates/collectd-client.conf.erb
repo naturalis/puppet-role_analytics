@@ -6,16 +6,9 @@ FQDNLookup true
 Interval 10
 ReadThreads 5
 
-LoadPlugin syslog
-
-<Plugin "syslog">
-  LogLevel "info"
-</Plugin>
-
 LoadPlugin interface
 LoadPlugin load
 LoadPlugin memory
-LoadPlugin network
 LoadPlugin df
 LoadPlugin disk
 LoadPlugin uptime
@@ -24,11 +17,7 @@ LoadPlugin uptime
     Interface "eth0"
     IgnoreSelected false
 </Plugin>
-<Plugin network>
-    <Server "127.0.0.1" "25826">
-    </Server>
-</Plugin>
 
-Include "/etc/collectd.d"
+#Include "/etc/collectd.d"
 #Include "/etc/collectd/filters.conf"
 #Include "/etc/collectd/thresholds.conf"
