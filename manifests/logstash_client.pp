@@ -96,6 +96,25 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
               source => 'http://dl.marmotte.net/rpms/redhat/el6/x86_64/collectd-5.4.0-1.el6/collectd-5.4.0-1.el6.x86_64.rpm',
             }
 
+            class { '::collectd':
+              purge                 => true,
+              recurse               => true,
+              purge_config          => true,
+            }
+
+      #      class { 'collectd::plugin::network':
+      #        server       =>  '127.0.0.1',
+      #      }
+
+            class { 'collectd::plugin::load': }
+            class { 'collectd::plugin::memory': }
+            class { 'collectd::plugin::disk':
+              disks                 => $collectd_disks,
+            }
+            class { 'collectd::plugin::interface': }
+            class { 'collectd::plugin::df': }
+            class { 'collectd::plugin::uptime': }
+
             service { 'collectd':
               ensure     => 'running',
               enable     => true,
