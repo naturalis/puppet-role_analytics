@@ -7,13 +7,8 @@ PIDFile     "/var/run/collectd5.pid"
 Interval 10
 Timeout 2
 ReadThreads 5
-
 LoadPlugin df
 LoadPlugin disk
-<Plugin disk>
-  Disk  "<%= @collectd_disks %>"
-  IgnoreSelected false
-</Plugin>
 LoadPlugin interface
 LoadPlugin load
 LoadPlugin memory
@@ -26,6 +21,10 @@ LoadPlugin uptime
   ReportReserved true
   ValuesAbsolute true
   ValuesPercentage false
+</Plugin>
+<Plugin disk>
+  Disk  "<%= @collectd_disks %>"
+  IgnoreSelected false
 </Plugin>
 <Plugin interface>
         Interface "eth0"
