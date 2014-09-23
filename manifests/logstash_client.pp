@@ -70,7 +70,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             }
 
             class { 'collectd::plugin::network':
-              server => '127.0.0.1'
+              server => '127.0.0.1',
               port => '25826',
             }
 
