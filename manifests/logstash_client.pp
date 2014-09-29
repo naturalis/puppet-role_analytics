@@ -77,7 +77,14 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             class { 'collectd::plugin::df': }
             class { 'collectd::plugin::uptime': }
             class { 'collectd::plugin::network':
-              server                => '127.0.0.1',
+              timetolive    => '70',
+              maxpacketsize => '42',
+              forward       => false,
+              reportstats   => true,
+              servers       => { '127.0.0.1' => {
+                'port'          => '25826',
+                },
+              },
             }
 
             file_fragment { 'input collectd':
