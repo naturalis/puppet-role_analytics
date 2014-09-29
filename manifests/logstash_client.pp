@@ -76,6 +76,9 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
             class { 'collectd::plugin::interface': }
             class { 'collectd::plugin::df': }
             class { 'collectd::plugin::uptime': }
+            class { 'collectd::plugin::network':
+              server                => '127.0.0.1',
+            }
 
             file_fragment { 'input collectd':
               tag                   => "LS_CONFIG_CLIENT_${cluster_name}",

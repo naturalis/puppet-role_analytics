@@ -7,11 +7,14 @@ PIDFile     "/var/run/collectd5.pid"
 Interval 10
 Timeout 2
 ReadThreads 5
+ReportStats true
+LogLevel info
 LoadPlugin df
 LoadPlugin disk
 LoadPlugin interface
 LoadPlugin load
 LoadPlugin memory
+LoadPlugin network
 LoadPlugin uptime
 <Plugin df>
   IgnoreSelected false
@@ -27,4 +30,8 @@ LoadPlugin uptime
 </Plugin>
 <Plugin interface>
         Interface "eth0"
+        IgnoreSelected false
+</Plugin>
+<Plugin network>
+        Server "127.0.0.1"
 </Plugin>
