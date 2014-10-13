@@ -16,6 +16,7 @@ class role_analytics::logstash_client2(
      'LS_USER' => 'root',
      'LS_GROUP' => 'logstash',
      'LS_HEAP_SIZE' => '200m',
+     'setgid' => 'adm',
    }
 ){
 
