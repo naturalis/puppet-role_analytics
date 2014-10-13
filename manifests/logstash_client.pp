@@ -225,7 +225,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
                   ensure                => "present",
                   require               => Package['logstash'],
                   path                  => '/etc/init/logstash.conf',
-                  match                 => 'LS_HEAP_SIZE',
+                  match                 => 'LS_HEAP_SIZE=',
                   line                  => 'LS_HEAP_SIZE="200m"',
                   notify                => Service['logstash'],
                 }
