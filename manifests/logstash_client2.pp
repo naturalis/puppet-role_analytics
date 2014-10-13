@@ -15,7 +15,7 @@ class role_analytics::logstash_client2(
   $config_hash = {
     # 'LS_USER' => 'logstash',
     # 'LS_GROUP' => 'logstash',
-     'HEAP_SIZE' => '200',
+     'LS_HEAP_SIZE' => '200',
    }
 ){
 
