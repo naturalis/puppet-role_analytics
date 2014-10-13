@@ -127,7 +127,7 @@ class role_analytics::logstash_client2(
     }
 
     exec { 'update_groups':
-      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd5 restart",
+      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
       refreshonly             => true,
       require                 => Package['logstash'],
       unless                  => "/usr/bin/groups logstash | grep adm"
