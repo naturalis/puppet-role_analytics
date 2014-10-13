@@ -136,10 +136,10 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
           }
 
           service {'logstash':
-            ensure                  => running,
-            enable                  => true,
-            require                 => Package['logstash'],
-            hasrestart              => true,
+            ensure                      => running,
+            enable                      => true,
+            require                     => Package['logstash'],
+            hasrestart                  => true,
           }
 
           case $operatingsystem {
@@ -220,15 +220,25 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
                 require                 => Package['logstash'],
                 unless                  => "/usr/bin/groups logstash | grep adm"
               }
+              if <%= @memorysize %> <= '512' {
+                file_line { 'set_heapsize':
+                  ensure                => "present",
+                  require               => Package['logstash'],
+                  path                  => '/etc/init/logstash.conf',
+                  match                 => 'LS_HEAP_SIZE',
+                  line                  => 'LS_HEAP_SIZE="200m"',
+                  notify                => Service['logstash'],
+                }
+              }
             }
             'CentOS': {
 
               file {'logstash_client.conf':
-                ensure  => present,
-                path    => '/etc/logstash/conf.d/logstash_client.conf',
-                content => template('role_analytics/logstash_client.conf.erb'),
-                notify  => Service['logstash'],
-                require => Package['logstash'],
+                ensure                  => present,
+                path                    => '/etc/logstash/conf.d/logstash_client.conf',
+                content                 => template('role_analytics/logstash_client.conf.erb'),
+                notify                  => Service['logstash'],
+                require                 => Package['logstash'],
               }
 
               file_line { 'syslog_workaround':
@@ -251,14 +261,14 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
 
           if $use_dashboard {
             file {"/tmp/${dashboard_name}.json":
-              ensure                => "present",
-              mode                  => "644",
-              content               => template("role_analytics/${dashboard_name}.json.erb"),
-              notify                => Exec['install_dashboard'],
+              ensure                    => "present",
+              mode                      => "644",
+              content                   => template("role_analytics/${dashboard_name}.json.erb"),
+              notify                    => Exec['install_dashboard'],
           }
             exec { 'install_dashboard':
-              command               => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
-              refreshonly           => true,
+              command                   => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
+              refreshonly               => true,
             }
           }
       }
