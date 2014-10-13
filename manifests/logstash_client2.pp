@@ -55,7 +55,7 @@ class role_analytics::logstash_client2(
         },
       }
       class { 'collectd::plugin::syslog':
-        log_level => 'warning'
+        log_level => 'info'
       }
 
       file_fragment { 'input collectd':
