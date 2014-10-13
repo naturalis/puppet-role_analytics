@@ -64,13 +64,6 @@ class role_analytics::logstash_client2(
       }
     }
 
-    service {'logstash':
-      ensure                      => running,
-      enable                      => true,
-      require                     => Package['logstash'],
-      hasrestart                  => true,
-    }
-
     file_fragment { 'begin input':
       tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
       content               => 'input {
