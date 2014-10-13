@@ -15,7 +15,7 @@ class role_analytics::logstash_client2(
   $config_hash = {
      'LS_HEAP_SIZE' => '200m',
      'LS_USER' => 'logstash',
-     'LS_GROUP' => 'adm',
+     'LS_GROUP' => 'logstash',
    }
 ){
 
@@ -123,13 +123,6 @@ class role_analytics::logstash_client2(
       mode                    => '0640',
       require                 => Package['logstash'],
       notify                  => Service['logstash'],
-    }
-
-    exec { 'update_groups':
-      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
-      refreshonly             => true,
-      require                 => Package['logstash'],
-      unless                  => "/usr/bin/groups logstash | grep adm"
     }
 
     if $use_dashboard {
