@@ -13,9 +13,9 @@ class role_analytics::logstash_client2(
   $redis_ip                         = ["10.42.1.118","10.42.1.116","10.42.1.117"],
   $host_specific                    = undef,
   $config_hash = {
-    # 'LS_USER' => 'logstash',
-    # 'LS_GROUP' => 'logstash',
-     'LS_HEAP_SIZE' => '200',
+     'LS_USER' => 'logstash',
+     'LS_GROUP' => 'logstash',
+     'LS_HEAP_SIZE' => '200m',
    }
 ){
 
