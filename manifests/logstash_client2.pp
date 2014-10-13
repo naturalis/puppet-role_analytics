@@ -1,4 +1,4 @@
-class role_analytics::logstash_client(
+class role_analytics::logstash_client2(
 
   $cluster_name                     = undef,
   $redis_password                   = undef,
