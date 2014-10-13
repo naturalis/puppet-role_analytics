@@ -220,7 +220,7 @@ if ! defined(Class["role_analytics::logstash_indexer"]) {
                 require                 => Package['logstash'],
                 unless                  => "/usr/bin/groups logstash | grep adm"
               }
-              if $memorysize < 512 {
+              if $memorysize < '512' {
                 file_line { 'set_heapsize':
                   ensure                => "present",
                   require               => Package['logstash'],
