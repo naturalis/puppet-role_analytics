@@ -33,9 +33,9 @@ class role_analytics::logstash_client2(
     if $use_collectd {
 
       class { 'collectd':
-        purge                 => true,
-        recurse               => true,
-        purge_config          => true,
+    #    purge                 => true,
+    #    recurse               => true,
+    #    purge_config          => true,
       }
       class { 'collectd::plugin::load': }
       class { 'collectd::plugin::memory': }
