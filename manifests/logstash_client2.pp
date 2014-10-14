@@ -56,10 +56,6 @@ class role_analytics::logstash_client2(
       class { 'collectd::plugin::syslog':
         log_level => 'info'
       }
-    class { 'collectd::plugin::logfile':
-      log_level => 'info',
-      log_file => '/var/log/syslog'
-    }
 
       file_fragment { 'input collectd':
         tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
