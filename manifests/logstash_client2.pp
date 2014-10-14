@@ -14,8 +14,8 @@ class role_analytics::logstash_client2(
   $host_specific                    = undef,
   $config_hash = {
      'LS_HEAP_SIZE' => '200m',
+     'LS_USER' => 'root',
      'setgid' => 'adm',
-     'LS_GROUP' => 'adm',
    }
 ){
 
