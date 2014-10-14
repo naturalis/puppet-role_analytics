@@ -55,9 +55,9 @@ class role_analytics::logstash_client2(
           },
         },
       }
-      class { 'collectd::plugin::syslog':
-        log_level => 'info'
-      }
+    #  class { 'collectd::plugin::syslog':
+    #    log_level => 'info'
+    #  }
 
       file_fragment { 'input collectd':
         tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
@@ -126,6 +126,29 @@ class role_analytics::logstash_client2(
       mode                    => '0640',
       require                 => Package['logstash'],
       notify                  => Service['logstash'],
+    }
+
+    case $operatingsystem {
+      'Ubuntu': {
+        file_line { 'syslog_workaround':
+          ensure                  => "present",
+          require                 => Package['logstash'],
+          path                    => '/etc/init/logstash.conf',
+          match                   => 'setgid',
+          line                    => 'setgid adm',
+          notify                  => Exec['update_groups'],
+        }
+      }
+      'CentOS': {
+          file_line { 'syslog_workaround':
+          ensure                  => "present",
+          require                 => Package['logstash'],
+          path                    => '/etc/sysconfig/logstash',
+          match                   => 'LS_GROUP=',
+          line                    => 'LS_GROUP=adm',
+          notify                  => Exec['update_groups'],
+        }
+      }
     }
 
     exec { 'update_groups':
