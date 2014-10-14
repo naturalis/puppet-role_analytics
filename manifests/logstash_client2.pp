@@ -14,9 +14,7 @@ class role_analytics::logstash_client2(
   $host_specific                    = undef,
   $config_hash = {
      'LS_HEAP_SIZE' => '200m',
-     'setgid' => 'adm',
-     'LS_GROUP' => 'adm',
-   }
+  }
 ){
 
   if ! defined(Class["role_analytics::logstash_indexer"]) {
