@@ -14,6 +14,8 @@ class role_analytics::logstash_client2(
   $host_specific                    = undef,
   $config_hash = {
      'LS_HEAP_SIZE' => '200m',
+     'setgid' => 'adm',
+     'LS_GROUP' => 'adm',
    }
 ){
 
@@ -148,8 +150,8 @@ class role_analytics::logstash_client2(
           ensure                  => "present",
           require                 => Package['logstash'],
           path                    => '/etc/sysconfig/logstash',
-          match                   => 'LS_USER=',
-          line                    => 'LS_USER=root',
+          match                   => 'LS_GROUP=',
+          line                    => 'LS_GROUP=adm',
           notify                  => Exec['update_groups'],
         }
         exec { 'update_groups':
