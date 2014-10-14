@@ -150,8 +150,8 @@ class role_analytics::logstash_client2(
           ensure                  => "present",
           require                 => Package['logstash'],
           path                    => '/etc/sysconfig/logstash',
-          match                   => 'LS_GROUP=',
-          line                    => 'LS_GROUP=adm',
+          match                   => 'LS_USER=',
+          line                    => 'LS_USER=root',
           notify                  => Exec['update_groups'],
         }
         exec { 'update_groups':
