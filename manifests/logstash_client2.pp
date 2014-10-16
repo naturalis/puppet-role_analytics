@@ -18,7 +18,6 @@ class role_analytics::logstash_client2(
   $redis_ip                   = ['10.42.1.118','10.42.1.116','10.42.1.117'],
   $host_specific              = undef,
   $config_hash                = {
-    'LS_HEAP_SIZE'            => '200m',
     'LS_USER'                 => 'root',
   }
 ){
@@ -155,6 +154,16 @@ class role_analytics::logstash_client2(
           match               => 'setuid',
           line                => 'setuid root',
           notify              => [ Service['logstash'], Service['collectd'], ],
+        }
+        if $memorysize_mb <= '512' {
+          file_line { 'set_heapsize':
+            ensure                => "present",
+            require               => Package['logstash'],
+            path                  => '/etc/init/logstash.conf',
+            match                 => 'LS_HEAP_SIZE=',
+            line                  => 'LS_HEAP_SIZE="200m"',
+            notify                => Service['logstash'],
+          }
         }
       }
       'CentOS': {
