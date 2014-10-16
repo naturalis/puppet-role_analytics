@@ -47,66 +47,68 @@ class role_analytics::logstash_client(
       case $::osfamily {
         debian: {
           class { 'collectd':
-            purge        => true,
-            recurse      => true,
-            purge_config => true,
-            require      => Class ['role_analytics::collectd_repos'],
+            purge             => true,
+            recurse           => true,
+            purge_config      => true,
+            require           => Class ['role_analytics::collectd_repos'],
           }
 
           file_line { 'syslog_workaround':
-            ensure              => 'present',
-            require             => Package['logstash'],
-            path                => '/etc/init/logstash.conf',
-            match               => 'setuid',
-            line                => 'setuid root',
-            notify              => [ Service['logstash'], Service['collectd'], ],
+            ensure            => 'present',
+            require           => Package['logstash'],
+            path              => '/etc/init/logstash.conf',
+            match             => 'setuid',
+            line              => 'setuid root',
+            notify            => [ Service['logstash'], Service['collectd'], ],
           }
 
           if $memorysize_mb <= '512' {
             file_line { 'set_heapsize':
-              ensure                => 'present',
-              require               => Package['logstash'],
-              path                  => '/etc/init/logstash.conf',
-              match                 => 'LS_HEAP_SIZE=',
-              line                  => 'LS_HEAP_SIZE="200m"',
-              notify                => Service['logstash'],
+              ensure          => 'present',
+              require         => Package['logstash'],
+              path            => '/etc/init/logstash.conf',
+              match           => 'LS_HEAP_SIZE=',
+              line            => 'LS_HEAP_SIZE="200m"',
+              notify          => Service['logstash'],
             }
           }
         }
 
         redhat: {
           # Overrule service_name from inherits collectd::params using resource collector
-          Service <| title == 'collectd' |> { name => 'collectd5' }
+          Service <| title == 'collectd' |> {
+            name              => 'collectd5' }
 
           # Overrule file name collectd.conf from inherits collectd::params using resource collector
-          File <| title == 'collectd.conf' |> { path => '/etc/collectd5.conf' }
+          File <| title == 'collectd.conf' |> {
+            path              => '/etc/collectd5.conf' }
 
         # Install collectd
           class { 'collectd':
-            package_name => 'collectd5',
-            purge        => true,
-            recurse      => true,
-            purge_config => true,
-            require      => Class ['role_analytics::collectd_repos'],
+            package_name      => 'collectd5',
+            purge             => true,
+            recurse           => true,
+            purge_config      => true,
+            require           => Class ['role_analytics::collectd_repos'],
           }
 
           file_line { 'syslog_workaround':
-            ensure              => 'present',
-            require             => Package['logstash'],
-            path                => '/etc/sysconfig/logstash',
-            match               => 'LS_USER=',
-            line                => 'LS_USER=root',
-            notify              => [ Service['logstash'] ],
+            ensure            => 'present',
+            require           => Package['logstash'],
+            path              => '/etc/sysconfig/logstash',
+            match             => 'LS_USER=',
+            line              => 'LS_USER=root',
+            notify            => [ Service['logstash'] ],
           }
 
           if $memorysize_mb <= '512' {
             file_line { 'set_heapsize':
-              ensure                => 'present',
-              require               => Package['logstash'],
-              path                  => '/etc/sysconfig/logstash',
-              match                 => 'LS_HEAP_SIZE=',
-              line                  => 'LS_HEAP_SIZE="200m"',
-              notify                => Service['logstash'],
+              ensure          => 'present',
+              require         => Package['logstash'],
+              path            => '/etc/sysconfig/logstash',
+              match           => 'LS_HEAP_SIZE=',
+              line            => 'LS_HEAP_SIZE="200m"',
+              notify          => Service['logstash'],
             }
           }
         }
