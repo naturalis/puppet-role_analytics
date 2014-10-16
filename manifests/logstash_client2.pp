@@ -119,32 +119,6 @@ class role_analytics::logstash_client2(
       before                  => File_concat['/etc/logstash/conf.d/logstash_client.conf']
     }
 
-    case $operatingsystem {
-      'Ubuntu': {
-        $config_path = '/etc/init/logstash.conf'
-      }
-      'CentOS': {
-        $config_path = '/etc/sysconfig/logstash'
-      }
-    }
-
-    file_line { 'syslog_workaround':
-      ensure                  => "present",
-      require                 => Package['logstash'],
-      path                    => $config_path,
-      match                   => 'setgid',
-      line                    => 'setgid adm',
-      notify                  => Exec['update_groups'],
-    }
-
-    exec { 'update_groups':
-      command                 => "/usr/sbin/usermod -a -G adm logstash",
-      refreshonly             => true,
-      require                 => Package['logstash'],
-      notify                  => Service['logstash'],
-      unless                  => "/usr/bin/groups logstash | grep adm"
-    }
-
     file_concat { '/etc/logstash/conf.d/logstash_client.conf':
       tag                     => "LS_CONFIG_CLIENT_${cluster_name}",
       owner                   => 'logstash',
