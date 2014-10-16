@@ -175,7 +175,7 @@ class role_analytics::logstash_client(
           path                => '/etc/sysconfig/logstash',
           match               => 'LS_USER=',
           line                => 'LS_USER=root',
-          notify              => [ Service['logstash'], Service['collectd5'], ],
+          notify              => [ Service['logstash'] ],
         }
 
         if $memorysize_mb <= '512' {
