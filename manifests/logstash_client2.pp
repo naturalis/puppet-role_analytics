@@ -161,7 +161,7 @@ class role_analytics::logstash_client2(
     if $use_dashboard {
       file {"/tmp/${dashboard_name}.json":
         ensure                    => "present",
-        path                      => "/tmp/${dashboard_name}.json"
+        path                      => "/tmp/${dashboard_name}.json",
         mode                      => "644",
         content                   => template("role_analytics/${dashboard_name}.json.erb"),
         notify                    => Exec['install_dashboard'],
@@ -174,7 +174,7 @@ class role_analytics::logstash_client2(
     else {
       file {"/tmp/${dashboard_name}.json":
         ensure                  => absent,
-        path                    => "/tmp/${dashboard_name}.json"
+        path                    => "/tmp/${dashboard_name}.json",
       }
     }
 }
