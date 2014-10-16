@@ -48,13 +48,18 @@ class role_analytics::logstash_client2(
         purge_config          => true,
       }
       class { 'collectd::plugin::load':}
+
       class { 'collectd::plugin::memory':}
+
       class { 'collectd::plugin::disk':
         disks                 => $collectd_disks,
       }
       class { 'collectd::plugin::interface':}
+
       class { 'collectd::plugin::df':}
+
       class { 'collectd::plugin::uptime':}
+
       class { 'collectd::plugin::network':
         timetolive            => '70',
         maxpacketsize         => '42',
@@ -144,7 +149,7 @@ class role_analytics::logstash_client2(
       'Ubuntu': {
         file_line { 'syslog_workaround':
           ensure              => 'present',
-          require             => Package['logstash'],
+          require             => [ Service['logstash'], Service['collectd'], ],
           path                => '/etc/init/logstash.conf',
           match               => 'setuid',
           line                => 'setuid root',
@@ -154,7 +159,7 @@ class role_analytics::logstash_client2(
       'CentOS': {
         file_line { 'syslog_workaround':
           ensure              => 'present',
-          require             => Package['logstash'],
+          require             => [ Service['logstash'], Service['collectd'], ],
           path                => '/etc/sysconfig/logstash',
           match               => 'LS_USER=',
           line                => 'LS_USER=root',
