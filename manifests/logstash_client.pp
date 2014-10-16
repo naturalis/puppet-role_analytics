@@ -24,7 +24,7 @@ class role_analytics::logstash_client(
 
   if ! defined(Class['role_analytics::logstash_indexer']) {
 
-    $memorysize_real          = "${memorysize} | cut -d ' ' -f 1"
+    $memorysize_real = inline_template(<%= memorysize.split(' ')[1] %>)
 
     class { 'logstash':
       java_install            => true,
