@@ -143,7 +143,7 @@ class role_analytics::logstash_client2(
           path                    => '/etc/init/logstash.conf',
           match                   => 'setuid',
           line                    => 'setuid root',
-          notify                  => Service['logstash'],
+          notify                  => Service['logstash'],Service['collectd'],
         }
       }
       'CentOS': {
@@ -153,7 +153,7 @@ class role_analytics::logstash_client2(
           path                    => '/etc/sysconfig/logstash',
           match                   => 'LS_USER=',
           line                    => 'LS_USER=root',
-          notify                  => Service['logstash'],
+          notify                  => Service['logstash'],Service['collectd'],
         }
       }
     }
@@ -161,6 +161,7 @@ class role_analytics::logstash_client2(
     if $use_dashboard {
       file {"/tmp/${dashboard_name}.json":
         ensure                    => "present",
+        path                      => "/tmp/${dashboard_name}.json"
         mode                      => "644",
         content                   => template("role_analytics/${dashboard_name}.json.erb"),
         notify                    => Exec['install_dashboard'],
@@ -169,6 +170,12 @@ class role_analytics::logstash_client2(
         command                   => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
         refreshonly               => true,
       }
-}
+    }
+    else {
+      file {"/tmp/${dashboard_name}.json":
+        ensure                  => absent,
+        path                    => "/tmp/${dashboard_name}.json"
+      }
+    }
 }
 }
