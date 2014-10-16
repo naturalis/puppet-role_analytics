@@ -53,13 +53,11 @@ class role_analytics::logstash_client2(
           },
         },
       }
-    #  class { 'collectd::plugin::syslog':
-    #    log_level => 'info'
-    #  }
+
       class { 'collectd::plugin::logfile':
         log_level => 'info',
         log_file => '/var/log/collectd.log'
-}
+      }
 
       file_fragment { 'input collectd':
         tag                   => "LS_CONFIG_CLIENT_${cluster_name}",
@@ -130,40 +128,21 @@ class role_analytics::logstash_client2(
       notify                  => Service['logstash'],
     }
 
-  #  case $operatingsystem {
-  #    'Ubuntu': {
-    #    file_line { 'syslog_workaround':
-    #      ensure                  => "present",
-    #      require                 => Package['logstash'],
-    #      path                    => '/etc/init/logstash.conf',
-    #      match                   => 'setgid',
-    #      line                    => 'setgid adm',
-    #      notify                  => Exec['update_groups'],
-    #    }
-    #    exec { 'update_groups':
-    #      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
-    #      refreshonly             => true,
-    #      require                 => Package['logstash'],
-    #      unless                  => "/usr/bin/groups logstash | grep adm"
-    #    }
-    #  }
-    #  'CentOS': {
-    #    file_line { 'syslog_workaround':
-    #      ensure                  => "present",
-    #      require                 => Package['logstash'],
-    #      path                    => '/etc/sysconfig/logstash',
-    #      match                   => 'LS_GROUP=',
-    #      line                    => 'LS_GROUP=adm',
-    #      notify                  => Exec['update_groups'],
-    #    }
-    #    exec { 'update_groups':
-    #      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
-    #      refreshonly             => true,
-    #      require                 => Package['logstash'],
-    #      unless                  => "/usr/bin/groups logstash | grep adm"
-  #      }
-  #    }
-  #  }
+    file_line { 'syslog_workaround':
+      ensure                  => "present",
+      require                 => Package['logstash'],
+      path                    => '/etc/init/logstash.conf',
+      match                   => 'setgid',
+      line                    => 'setgid adm',
+      notify                  => Exec['update_groups'],
+    }
+
+    exec { 'update_groups':
+      command                 => "/usr/sbin/usermod -a -G adm logstash && /etc/init.d/logstash restart && /etc/init.d/collectd restart",
+      refreshonly             => true,
+      require                 => Package['logstash'],
+      unless                  => "/usr/bin/groups logstash | grep adm"
+    }
 
     if $use_dashboard {
       file {"/tmp/${dashboard_name}.json":
@@ -176,7 +155,6 @@ class role_analytics::logstash_client2(
         command                   => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
         refreshonly               => true,
       }
-
 }
 }
 }
