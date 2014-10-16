@@ -19,6 +19,7 @@ class role_analytics::logstash_client(
   $host_specific              = undef,
   $config_hash                = {
     'LS_USER'                 => 'root',
+    'LS_HEAP_SIZE'            => '200m',
   }
 ){
 
@@ -174,7 +175,7 @@ class role_analytics::logstash_client(
           path                => '/etc/sysconfig/logstash',
           match               => 'LS_USER=',
           line                => 'LS_USER=root',
-          notify              => [ Service['logstash'], Service['collectd'], ],
+          notify              => [ Service['logstash'], Service['collectd5'], ],
         }
 
         if $memorysize_mb <= '512' {
