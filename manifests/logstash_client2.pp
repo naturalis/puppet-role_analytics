@@ -27,6 +27,12 @@ class role_analytics::logstash_client2(
       init_defaults => $config_hash,
     }
 
+    service { 'logstash-web':
+      ensure     => 'stopped',
+      enable     => false,
+      require    => Package['logstash'],
+    }
+
     $redis_cluster_string = join($redis_ip,'","')
 
     if $use_collectd {
@@ -127,14 +133,6 @@ class role_analytics::logstash_client2(
       mode                    => '0640',
       require                 => Package['logstash'],
       notify                  => Service['logstash'],
-    }
-
-    file_line { 'stop_logstashweb':
-      ensure                  => "present",
-      require                 => Package['logstash'],
-      path                    => '/etc/init/logstash-web.conf',
-      match                   => 'start on',
-      line                    => 'start on never',
     }
 
     if $use_dashboard {
