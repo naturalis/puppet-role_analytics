@@ -18,19 +18,29 @@ class role_analytics::logstash_client2(
   }
 ){
 
+  # Run Stages
+  stage { 'pre':
+  before => Stage["main"],
+  }
+
+  stage { 'after':
+  after => Stage["main"],
+  }
+
   if ! defined(Class["role_analytics::logstash_indexer"]) {
 
     class { 'logstash':
-      java_install => true,
-      manage_repo  => true,
-      repo_version => $version,
-      init_defaults => $config_hash,
+      java_install            => true,
+      manage_repo             => true,
+      repo_version            => $version,
+      init_defaults           => $config_hash,
+      stage                   => 'pre',
     }
 
     service { 'logstash-web':
-      ensure     => 'stopped',
-      enable     => false,
-      require    => Package['logstash'],
+      ensure                  => 'stopped',
+      enable                  => false,
+      require                 => Package['logstash'],
     }
 
     $redis_cluster_string = join($redis_ip,'","')
@@ -41,6 +51,7 @@ class role_analytics::logstash_client2(
         purge                 => true,
         recurse               => true,
         purge_config          => true,
+        stage                 => 'pre',
       }
       class { 'collectd::plugin::load': }
       class { 'collectd::plugin::memory': }
@@ -144,6 +155,7 @@ class role_analytics::logstash_client2(
           match                   => 'setuid',
           line                    => 'setuid root',
           notify                  => [ Service["logstash"], Service["collectd"], ],
+          stage                   => 'after',
         }
       }
       'CentOS': {
@@ -154,6 +166,7 @@ class role_analytics::logstash_client2(
           match                   => 'LS_USER=',
           line                    => 'LS_USER=root',
           notify                  => [ Service["logstash"], Service["collectd"], ],
+          stage                   => 'after',
         }
       }
     }
@@ -165,6 +178,7 @@ class role_analytics::logstash_client2(
         mode                      => "644",
         content                   => template("role_analytics/${dashboard_name}.json.erb"),
         notify                    => Exec['install_dashboard'],
+        stage                     => 'after',
       }
       exec { 'install_dashboard':
         command                   => "/usr/bin/curl -XPUT http://${kibana_ip}:9200/kibana-int/dashboard/host-${hostname} -T /tmp/${dashboard_name}.json",
