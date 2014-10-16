@@ -23,10 +23,6 @@ class role_analytics::logstash_client2(
   }
 ){
 
-  stage { 'pre':
-  before => Stage['main'],
-  }
-
   if ! defined(Class['role_analytics::logstash_indexer']) {
 
     class { 'logstash':
@@ -50,27 +46,15 @@ class role_analytics::logstash_client2(
         purge                 => true,
         recurse               => true,
         purge_config          => true,
-        stage                 => 'pre',
       }
-      class { 'collectd::plugin::load':
-        stage                 => 'pre',
-      }
-      class { 'collectd::plugin::memory':
-        stage                 => 'pre',
-      }
+      class { 'collectd::plugin::load':}
+      class { 'collectd::plugin::memory':}
       class { 'collectd::plugin::disk':
-        stage                 => 'pre',
         disks                 => $collectd_disks,
       }
-      class { 'collectd::plugin::interface':
-        stage                 => 'pre',
-      }
-      class { 'collectd::plugin::df':
-        stage                 => 'pre',
-      }
-      class { 'collectd::plugin::uptime':
-        stage                 => 'pre',
-      }
+      class { 'collectd::plugin::interface':}
+      class { 'collectd::plugin::df':}
+      class { 'collectd::plugin::uptime':}
       class { 'collectd::plugin::network':
         timetolive            => '70',
         maxpacketsize         => '42',
@@ -80,13 +64,11 @@ class role_analytics::logstash_client2(
           'port'              => '25826',
           },
         },
-        stage                 => 'pre',
       }
 
       class { 'collectd::plugin::logfile':
         log_level             => 'info',
         log_file              => '/var/log/collectd.log',
-        stage                 => 'pre',
       }
 
       file_fragment { 'input collectd':
