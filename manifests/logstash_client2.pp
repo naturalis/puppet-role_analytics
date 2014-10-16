@@ -69,6 +69,7 @@ class role_analytics::logstash_client2(
           'port'              => '25826',
           },
         },
+        before                => file_line ['syslog_workaround'],
       }
 
       class { 'collectd::plugin::logfile':
