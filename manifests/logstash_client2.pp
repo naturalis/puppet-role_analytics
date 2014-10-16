@@ -1,3 +1,8 @@
+# class logstash_client
+#
+# Manifest to install logstash client for logging.
+#
+
 class role_analytics::logstash_client2(
 
   $cluster_name               = undef,
@@ -10,16 +15,19 @@ class role_analytics::logstash_client2(
   $use_dashboard              = true,
   $dashboard_name             = 'host-baseboard',
   $kibana_ip                  = '10.42.1.111',
-  $redis_ip                   = ["10.42.1.118","10.42.1.116","10.42.1.117"],
+  $redis_ip                   = ['10.42.1.118','10.42.1.116','10.42.1.117'],
   $host_specific              = undef,
-  $config_hash                = { 'LS_HEAP_SIZE' => '200m', 'LS_USER' => 'root', }
+  $config_hash                = {
+    'LS_HEAP_SIZE'            => '200m',
+    'LS_USER'                 => 'root',
+  }
 ){
 
   stage { 'pre':
-  before => Stage["main"],
+  before => Stage['main'],
   }
 
-  if ! defined(Class["role_analytics::logstash_indexer"]) {
+  if ! defined(Class['role_analytics::logstash_indexer']) {
 
     class { 'logstash':
       java_install            => true,
@@ -78,7 +86,7 @@ class role_analytics::logstash_client2(
 
       class { 'collectd::plugin::logfile':
         log_level             => 'info',
-        log_file              => '/var/log/collectd.log'
+        log_file              => '/var/log/collectd.log',
         stage                 => 'pre',
       }
 
@@ -154,31 +162,32 @@ class role_analytics::logstash_client2(
     case $operatingsystem {
       'Ubuntu': {
         file_line { 'syslog_workaround':
-          ensure              => "present",
+          ensure              => 'present',
           require             => Package['logstash'],
           path                => '/etc/init/logstash.conf',
           match               => 'setuid',
           line                => 'setuid root',
-          notify              => [ Service["logstash"], Service["collectd"], ],
+          notify              => [ Service['logstash'], Service['collectd'], ],
         }
       }
       'CentOS': {
         file_line { 'syslog_workaround':
-          ensure              => "present",
+          ensure              => 'present',
           require             => Package['logstash'],
           path                => '/etc/sysconfig/logstash',
           match               => 'LS_USER=',
           line                => 'LS_USER=root',
-          notify              => [ Service["logstash"], Service["collectd"], ],
+          notify              => [ Service['logstash'], Service['collectd'], ],
         }
       }
+      default: {}
     }
 
     if $use_dashboard {
       file {"/tmp/${dashboard_name}.json":
-        ensure                => "present",
+        ensure                => 'present',
         path                  => "/tmp/${dashboard_name}.json",
-        mode                  => "644",
+        mode                  => '0644',
         content               => template("role_analytics/${dashboard_name}.json.erb"),
         notify                => Exec['install_dashboard'],
       }
