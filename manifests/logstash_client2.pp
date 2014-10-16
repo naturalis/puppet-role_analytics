@@ -149,7 +149,7 @@ class role_analytics::logstash_client2(
       'Ubuntu': {
         file_line { 'syslog_workaround':
           ensure              => 'present',
-          require             => [ package['logstash'], package['collectd'], ],
+          require             => Package['logstash'],
           path                => '/etc/init/logstash.conf',
           match               => 'setuid',
           line                => 'setuid root',
@@ -159,7 +159,7 @@ class role_analytics::logstash_client2(
       'CentOS': {
         file_line { 'syslog_workaround':
           ensure              => 'present',
-          require             => [ package['logstash'], package['collectd'], ],
+          require             => Package['logstash'],
           path                => '/etc/sysconfig/logstash',
           match               => 'LS_USER=',
           line                => 'LS_USER=root',
