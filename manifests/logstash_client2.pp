@@ -14,7 +14,6 @@ class role_analytics::logstash_client2(
   $host_specific                    = undef,
   $config_hash = {
      'LS_HEAP_SIZE' => '200m',
-     'LS_USER'      => 'root',
   }
 ){
 
@@ -133,6 +132,29 @@ class role_analytics::logstash_client2(
       mode                    => '0640',
       require                 => Package['logstash'],
       notify                  => Service['logstash'],
+    }
+
+    case $operatingsystem {
+      'Ubuntu': {
+        file_line { 'syslog_workaround':
+          ensure                  => "present",
+          require                 => Package['logstash'],
+          path                    => '/etc/init/logstash.conf',
+          match                   => 'setuid',
+          line                    => 'setuid root',
+          notify                  => Service['logstash'],
+        }
+      }
+      'CentOS': {
+        file_line { 'syslog_workaround':
+          ensure                  => "present",
+          require                 => Package['logstash'],
+          path                    => '/etc/sysconfig/logstash',
+          match                   => 'LS_USER=',
+          line                    => 'LS_USER=root',
+          notify                  => Service['logstash'],
+        }
+      }
     }
 
     if $use_dashboard {
