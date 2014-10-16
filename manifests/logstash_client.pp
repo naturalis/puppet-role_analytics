@@ -24,8 +24,6 @@ class role_analytics::logstash_client(
 
   if ! defined(Class['role_analytics::logstash_indexer']) {
 
-    $memorysize_real = inline_template(<%= memorysize.split(' ')[1] %>)
-
     class { 'logstash':
       java_install            => true,
       manage_repo             => true,
@@ -147,7 +145,7 @@ class role_analytics::logstash_client(
       notify                  => Service['logstash'],
     }
 
-    if $memorysize_real <= '512' {
+    if $memorysize_mb <= '512' {
       file_line { 'set_heapsize':
         ensure                => 'present',
         require               => Package['logstash'],
