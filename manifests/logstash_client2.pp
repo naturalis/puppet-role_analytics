@@ -130,6 +130,14 @@ class role_analytics::logstash_client2(
       notify                  => Service['logstash'],
     }
 
+    file_line { 'stop_logstashweb':
+      ensure                  => "present",
+      require                 => Package['logstash'],
+      path                    => '/etc/init/logstash-web.conf',
+      match                   => 'start on',
+      line                    => 'start on never',
+    }
+
     if $use_dashboard {
       file {"/tmp/${dashboard_name}.json":
         ensure                    => "present",
