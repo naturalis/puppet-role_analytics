@@ -143,7 +143,7 @@ class role_analytics::logstash_client2(
           path                    => '/etc/init/logstash.conf',
           match                   => 'setuid',
           line                    => 'setuid root',
-          notify                  => Service["logstash","collectd"],
+          notify                  => [ Service["logstash"], Service["collectd"], ],
         }
       }
       'CentOS': {
@@ -153,7 +153,7 @@ class role_analytics::logstash_client2(
           path                    => '/etc/sysconfig/logstash',
           match                   => 'LS_USER=',
           line                    => 'LS_USER=root',
-          notify                  => Service["logstash","collectd"],
+          notify                  => [ Service["logstash"], Service["collectd"], ],
         }
       }
     }
