@@ -34,7 +34,6 @@ class role_analytics::logstash_client2(
       manage_repo             => true,
       repo_version            => $version,
       init_defaults           => $config_hash,
-      stage                   => 'pre',
     }
 
     service { 'logstash-web':
