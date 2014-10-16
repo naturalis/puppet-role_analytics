@@ -52,6 +52,26 @@ class role_analytics::logstash_client(
             purge_config => true,
             require      => Class ['role_analytics::collectd_repos'],
           }
+
+          file_line { 'syslog_workaround':
+            ensure              => 'present',
+            require             => Package['logstash'],
+            path                => '/etc/init/logstash.conf',
+            match               => 'setuid',
+            line                => 'setuid root',
+            notify              => [ Service['logstash'], Service['collectd'], ],
+          }
+
+          if $memorysize_mb <= '512' {
+            file_line { 'set_heapsize':
+              ensure                => 'present',
+              require               => Package['logstash'],
+              path                  => '/etc/init/logstash.conf',
+              match                 => 'LS_HEAP_SIZE=',
+              line                  => 'LS_HEAP_SIZE="200m"',
+              notify                => Service['logstash'],
+            }
+          }
         }
 
         redhat: {
@@ -69,7 +89,28 @@ class role_analytics::logstash_client(
             purge_config => true,
             require      => Class ['role_analytics::collectd_repos'],
           }
+
+          file_line { 'syslog_workaround':
+            ensure              => 'present',
+            require             => Package['logstash'],
+            path                => '/etc/sysconfig/logstash',
+            match               => 'LS_USER=',
+            line                => 'LS_USER=root',
+            notify              => [ Service['logstash'] ],
+          }
+
+          if $memorysize_mb <= '512' {
+            file_line { 'set_heapsize':
+              ensure                => 'present',
+              require               => Package['logstash'],
+              path                  => '/etc/sysconfig/logstash',
+              match                 => 'LS_HEAP_SIZE=',
+              line                  => 'LS_HEAP_SIZE="200m"',
+              notify                => Service['logstash'],
+            }
+          }
         }
+        default: {}
       }
 
       class { 'collectd::plugin::load':}
@@ -169,51 +210,6 @@ class role_analytics::logstash_client(
       mode                    => '0640',
       require                 => Package['logstash'],
       notify                  => Service['logstash'],
-    }
-    case $::osfamily {
-      debian: {
-        file_line { 'syslog_workaround':
-          ensure              => 'present',
-          require             => Package['logstash'],
-          path                => '/etc/init/logstash.conf',
-          match               => 'setuid',
-          line                => 'setuid root',
-          notify              => [ Service['logstash'], Service['collectd'], ],
-        }
-
-        if $memorysize_mb <= '512' {
-          file_line { 'set_heapsize':
-            ensure                => 'present',
-            require               => Package['logstash'],
-            path                  => '/etc/init/logstash.conf',
-            match                 => 'LS_HEAP_SIZE=',
-            line                  => 'LS_HEAP_SIZE="200m"',
-            notify                => Service['logstash'],
-          }
-        }
-      }
-      redhat: {
-        file_line { 'syslog_workaround':
-          ensure              => 'present',
-          require             => Package['logstash'],
-          path                => '/etc/sysconfig/logstash',
-          match               => 'LS_USER=',
-          line                => 'LS_USER=root',
-          notify              => [ Service['logstash'] ],
-        }
-
-        if $memorysize_mb <= '512' {
-          file_line { 'set_heapsize':
-            ensure                => 'present',
-            require               => Package['logstash'],
-            path                  => '/etc/sysconfig/logstash',
-            match                 => 'LS_HEAP_SIZE=',
-            line                  => 'LS_HEAP_SIZE="200m"',
-            notify                => Service['logstash'],
-          }
-        }
-      }
-      default: {}
     }
 
     if $use_dashboard {
