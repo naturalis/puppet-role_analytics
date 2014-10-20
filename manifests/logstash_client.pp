@@ -68,7 +68,7 @@ class role_analytics::logstash_client(
               require         => Package['logstash'],
               path            => '/etc/init/logstash.conf',
               match           => 'LS_HEAP_SIZE=',
-              line            => 'LS_HEAP_SIZE="200m"',
+              line            => 'LS_HEAP_SIZE="100m"',
               notify          => Service['logstash'],
             }
           }
