@@ -19,7 +19,7 @@ class role_analytics::logstash_client(
   $host_specific              = undef,
   $config_hash                = {
     'LS_USER'                 => 'root',
-    'LS_HEAP_SIZE'            => '200m',
+    'LS_HEAP_SIZE'            => '100m',
   }
 ){
 
