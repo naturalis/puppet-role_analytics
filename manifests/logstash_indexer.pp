@@ -61,7 +61,7 @@ class role_analytics::logstash_indexer(
   if 'suricata' in [tags] {
     elasticsearch {
       cluster => '${cluster_name}'
-      index   => logstash-suricata-%{+YYYY.MM.dd}
+      index   => 'logstash-suricata-%{+YYYY.MM.dd}'
     }
   } else {
     elasticsearch { cluster => '${cluster_name}' }
