@@ -53,25 +53,25 @@ class role_analytics::logstash_client(
             require           => Class ['role_analytics::collectd_repos'],
           }
 
-          file_line { 'syslog_workaround':
-            ensure            => 'present',
-            require           => Package['logstash'],
-            path              => '/etc/init/logstash.conf',
-            match             => 'setuid',
-            line              => 'setuid root',
-            notify            => [ Service['logstash'], Service['collectd'], ],
-          }
+          #file_line { 'syslog_workaround':
+          #  ensure            => 'present',
+          #  require           => Package['logstash'],
+          #  path              => '/etc/init/logstash.conf',
+          #  match             => 'setuid',
+          #  line              => 'setuid root',
+          #  notify            => [ Service['logstash'], Service['collectd'], ],
+          #}
 
-          if $memorysize_mb <= '512' {
-            file_line { 'set_heapsize':
-              ensure          => 'present',
-              require         => Package['logstash'],
-              path            => '/etc/init/logstash.conf',
-              match           => 'LS_HEAP_SIZE=',
-              line            => 'LS_HEAP_SIZE="100m"',
-              notify          => Service['logstash'],
-            }
-          }
+          #if $memorysize_mb <= '512' {
+          #  file_line { 'set_heapsize':
+          #    ensure          => 'present',
+          #    require         => Package['logstash'],
+          #    path            => '/etc/init/logstash.conf',
+          #    match           => 'LS_HEAP_SIZE=',
+          #    line            => 'LS_HEAP_SIZE="100m"',
+          #    notify          => Service['logstash'],
+          #  }
+          #}
         }
 
         redhat: {
