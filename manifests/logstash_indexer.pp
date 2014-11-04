@@ -57,7 +57,16 @@ class role_analytics::logstash_indexer(
   }
   file_fragment { 'output':
       tag     => "LS_CONFIG_INDEXER_${cluster_name}",
-      content => "output { elasticsearch { cluster => '${cluster_name}' } }",
+      content => "output {
+  if 'suricata' in [tags] {
+    elasticsearch {
+      cluster => '${cluster_name}'
+      index   => 'logstash-suricata-%{+YYYY.MM.dd}'
+    }
+  } else {
+    elasticsearch { cluster => '${cluster_name}' }
+  }
+}",
       order   => 699,
   }
 

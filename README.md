@@ -19,6 +19,7 @@ Classes
 Dependencies
 -------------
 - stdlib
+- elasticsearch-logstash
 
 Limitations
 -------------
