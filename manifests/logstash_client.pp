@@ -92,25 +92,25 @@ class role_analytics::logstash_client(
             require           => Class ['role_analytics::collectd_repos'],
           }
 
-          file_line { 'syslog_workaround':
-            ensure            => 'present',
-            require           => Package['logstash'],
-            path              => '/etc/sysconfig/logstash',
-            match             => 'LS_USER=',
-            line              => 'LS_USER=root',
-            notify            => [ Service['logstash'] ],
-          }
+          #file_line { 'syslog_workaround':
+          #  ensure            => 'present',
+          #  require           => Package['logstash'],
+          #  path              => '/etc/sysconfig/logstash',
+          #  match             => 'LS_USER=',
+          #  line              => 'LS_USER=root',
+          #  notify            => [ Service['logstash'] ],
+          #}
 
-          if $memorysize_mb <= '512' {
-            file_line { 'set_heapsize':
-              ensure          => 'present',
-              require         => Package['logstash'],
-              path            => '/etc/sysconfig/logstash',
-              match           => 'LS_HEAP_SIZE=',
-              line            => 'LS_HEAP_SIZE="100m"',
-              notify          => Service['logstash'],
-            }
-          }
+          #if $memorysize_mb <= '512' {
+          #  file_line { 'set_heapsize':
+          #    ensure          => 'present',
+          #    require         => Package['logstash'],
+          #    path            => '/etc/sysconfig/logstash',
+          #    match           => 'LS_HEAP_SIZE=',
+          #    line            => 'LS_HEAP_SIZE="100m"',
+          #    notify          => Service['logstash'],
+          #  }
+          #}
         }
         default: {}
       }
@@ -137,7 +137,7 @@ class role_analytics::logstash_client(
           'port'              => '25826',
           },
         },
-        before                => file_line ['syslog_workaround'],
+        #before                => file_line ['syslog_workaround'],
       }
 
       class { 'collectd::plugin::logfile':
