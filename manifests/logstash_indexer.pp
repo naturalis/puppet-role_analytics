@@ -58,11 +58,16 @@ class role_analytics::logstash_indexer(
   file_fragment { 'output':
       tag     => "LS_CONFIG_INDEXER_${cluster_name}",
       content => "output {
+  if 'testserver' in [tags] {
+     elasticsearch { cluster => 'cluster-burp' }
+  }
   if 'suricata' in [tags] {
     elasticsearch {
       cluster => '${cluster_name}'
       index   => 'logstash-suricata-%{+YYYY.MM.dd}'
     }
+  } else if 'testserveronly' in [tags] {
+    elasticsearch { cluster => 'cluster-burp' }
   } else {
     elasticsearch { cluster => '${cluster_name}' }
   }
