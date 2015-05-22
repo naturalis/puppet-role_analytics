@@ -20,6 +20,7 @@ Dependencies
 -------------
 - stdlib
 - elasticsearch-logstash
+- ispavailability-file_concat
 
 Limitations
 -------------
